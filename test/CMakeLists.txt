@@ -3,9 +3,7 @@ cmake_minimum_required(VERSION 2.8.9)
 include_directories(../lib/googletest)
 include_directories(../include)
 include_directories(../src)
-set(test_sources
-testvector3d.cpp
-)
+file(GLOB test_sources "*.cpp")
 #Can manually add the sources using the set command as follows:
 file(GLOB main_sources "../src/*.cpp")
 list(REMOVE_ITEM main_sources "${CMAKE_CURRENT_SOURCE_DIR}/../src/main.cpp")
