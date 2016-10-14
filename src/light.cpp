@@ -14,7 +14,7 @@ Light::Light() {
 	g = 0.0;
 	b = 0.0;
 }
-Light::Light(float ix, float iy, float iz, float ir, float ig, float ib, int flag) {
+Light::Light(double ix, double iy, double iz, double ir, double ig, double ib, int flag) {
 	if (flag == 0) {
 		pointLight = true;
 		directionalLight = false;
