@@ -10,7 +10,7 @@ cmake ..
 make
 ./mjr
 ~~~~
-## Running the Test Suite
+## Building the Test Suite
 Almost the same as above:
 ~~~~
 mkdir build
