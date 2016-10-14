@@ -21,6 +21,5 @@ public:
 		   double iurx, double iury,double iurz);
 
 	// other methods
-	Vector3D getVector();
-	Vector3D getColor();
+	Vector3D getPosition();
 };

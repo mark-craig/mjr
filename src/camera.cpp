@@ -1,4 +1,5 @@
 #include "vector3d.h"
+#include "camera.h"
 
 using namespace std;
 
