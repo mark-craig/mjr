@@ -17,7 +17,7 @@ Camera::Camera() {
 	urx = 1.0; ury = 1.0; urz = -1.0;
 }
 
-Camera::Camera(double x, double y, double z,
+Camera::Camera(double ix, double iy, double iz,
 			   double illx, double illy, double illz,
 			   double ilrx, double ilry,double ilrz,
 			   double iulx, double iuly,double iulz,
