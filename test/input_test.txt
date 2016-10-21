@@ -1,0 +1,7 @@
+cam ex ey ez llx lly llz lrx lry lrz ulx uly ulz urx ury urz
+sph cx cy cz r
+tri ax ay az bx by bz cx cy cz  
+obj "file name”
+ltp px py pz r g b [falloff]
+lta 255 0 201
+xfz
