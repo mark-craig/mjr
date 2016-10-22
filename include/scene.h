@@ -4,4 +4,4 @@ public:
 	Scene();
 	// methods
 	void render();
-}
+};
