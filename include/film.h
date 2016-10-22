@@ -9,6 +9,6 @@ public:
 	Film(int x, int y);
 
 	// methods
-	writeColor
+	// writeColor
 
 }

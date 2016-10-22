@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <sstream>
+#include "pystring.h"
 using namespace std;
 
 Parser::Parser() {
@@ -31,27 +31,16 @@ void Parser::parseInputFile(string filepath) {
 
 vector<string> Parser::argumentsFromLine(string line) {
 	// given a line, return a vector containing all the arguments
-	stringstream ss(line);
-	vector<string> args = vector<string>();
-	string arg;
-	int i = 0;
-	while(ss.good()) {
-		if (i == 0) {
-			continue;
-		}
-		arg = "";
-		ss >> arg;
-		args.push_back(arg);
-		i++;
-	}
-	return args;
+	vector<string> tokens;
+	pystring::split(line, tokens);
+	tokens.erase(tokens.begin());
+	return tokens;
 
 }
 
 string Parser::commandFromLine(string line) {
 	// given a line, return a vector containing the command
-	stringstream ss(line);
-	string cmd;
-	ss >> cmd;
-	return cmd;
+	vector<string> tokens;
+	pystring::split(line, tokens);
+	return tokens[0];
 }
