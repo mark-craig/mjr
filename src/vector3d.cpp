@@ -11,45 +11,45 @@ Vector3D::Vector3D() {
 	z = 0.0;
 }
 
-Vector3D::Vector3D(double inputx, double inputy, double inputz) {
+Vector3D::Vector3D(float inputx, float inputy, float inputz) {
 	x = inputx;
 	y = inputy;
 	z = inputz;
 }
 
-double Vector3D::magnitude(){
+float Vector3D::magnitude(){
 	return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));	
 }
 	
 Vector3D Vector3D::normalize(){
 	// returns a new vector in the same direction, such that the magnitude is 1
-	double mag = magnitude();
+	float mag = magnitude();
 	return Vector3D(x / mag, y / mag, z / mag);
 }
 
-Vector3D Vector3D::scale(double scalefactor) {
+Vector3D Vector3D::scale(float scalefactor) {
 	// returns a new vector with components multiplied by the given scale factor
 	return Vector3D(x * scalefactor, y * scalefactor, z * scalefactor);
 }
 
 Vector3D Vector3D::add(Vector3D v2) {
 	// returns the vector that is the sum between two vectors
-	double newx = x + v2.x;
-	double newy = y + v2.y;
-	double newz = z + v2.z;
+	float newx = x + v2.x;
+	float newy = y + v2.y;
+	float newz = z + v2.z;
 	return Vector3D(newx, newy, newz);
 }
 
 Vector3D Vector3D::subtract(Vector3D v2) {
 	// returns the vector that is the difference between two vectors
-	double newx = x - v2.x;
-	double newy = y - v2.y;
-	double newz = z - v2.z;
+	float newx = x - v2.x;
+	float newy = y - v2.y;
+	float newz = z - v2.z;
 	return Vector3D(newx, newy, newz);
 }
 
-double Vector3D::dot(Vector3D v2) {
-	// returns a double that is the dot product between two vectors
+float Vector3D::dot(Vector3D v2) {
+	// returns a float that is the dot product between two vectors
 	return x*v2.x + y*v2.y + z*v2.z;
 }
 
@@ -64,14 +64,14 @@ Vector3D Vector3D::cross(Vector3D v2) {
 
 Vector3D Vector3D::project(Vector3D v2) {
 	// returns the projection of the vector onto vector v2
-	double scalarProj = (this->dot(v2))*(1.0/v2.magnitude());
+	float scalarProj = (this->dot(v2))*(1.0/v2.magnitude());
 	return (v2.scale(1.0/v2.magnitude())).scale(scalarProj);
 
 }
 
-double Vector3D::getTheta(Vector3D v2) {
+float Vector3D::getTheta(Vector3D v2) {
 	// find the angle between the two vectors
-	double cosTheta = (this->dot(v2)) * (this->magnitude() * v2.magnitude());
+	float cosTheta = (this->dot(v2)) * (this->magnitude() * v2.magnitude());
 	return acos(cosTheta);
 }
 

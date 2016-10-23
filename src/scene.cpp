@@ -5,9 +5,13 @@
 
 using namespace cimg_library;
 
+Scene::Scene() {
+}
+
 void Scene::render() {
-	Sampler sampler = Sampler(640, 480);
+	Sampler sampler = Sampler(700, 500);
 	Sample sample = Sample();
 	while(sampler.getSample(sample)) {
+		
 	}
 };

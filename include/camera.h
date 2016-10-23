@@ -1,25 +1,31 @@
+#pragma once
+#include "vector3d.h"
+#include "sample.h"
+#include "ray.h"
+
 class Camera
 {
 public:
 	//position
-	double x; double y; double z;
+	float x; float y; float z;
 	// lower left
-	double llx; double lly; double llz;
+	float llx; float lly; float llz;
 	// lower right
-	double lrx; double lry; double lrz;
+	float lrx; float lry; float lrz;
 	// upper left
-	double ulx; double uly; double ulz;
+	float ulx; float uly; float ulz;
 	// upper right
-	double urx; double ury; double urz;
-
+	float urx; float ury; float urz;
 	//constructors
 	Camera();
-	Camera(double x, double y, double z,
-		   double illx, double illy, double illz,
-		   double ilrx, double ilry,double ilrz,
-		   double iulx, double iuly,double iulz,
-		   double iurx, double iury,double iurz);
+	Camera(float x, float y, float z,
+		   float illx, float illy, float illz,
+		   float ilrx, float ilry,float ilrz,
+		   float iulx, float iuly,float iulz,
+		   float iurx, float iury,float iurz);
 
 	// other methods
 	Vector3D getPosition();
+	Vector3D getCenterOfImagePlane();
+	void generateRay(Sample sample, Ray &ray, int nx, int ny);
 };
