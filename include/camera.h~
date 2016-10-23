@@ -2,8 +2,6 @@
 #include "vector3d.h"
 #include "sample.h"
 #include "ray.h"
-#include <vector>
-using namespace std;
 
 class Camera
 {
@@ -29,12 +27,5 @@ public:
 	// other methods
 	Vector3D getPosition();
 	Vector3D getCenterOfImagePlane();
-	vector<Vector3D> getBasisWUV();
-	void getImagePlaneVectors();
 	void generateRay(Sample sample, Ray &ray, int nx, int ny);
-
-	Vector3D ur = Vector3D(urx, ury, urz);
-	Vector3D ul = Vector3D(ulx, uly, ulz);
-	Vector3D ll = Vector3D(llx, lly, llz);
-	Vector3D lr = Vector3D(lrx, lry, lrz);
 };
