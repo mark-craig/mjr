@@ -17,6 +17,25 @@ Vector3D::Vector3D(float inputx, float inputy, float inputz) {
 	z = inputz;
 }
 
+void Vector3D::zero_out() {
+	x = 0.0;
+	y = 0.0;
+	z = 0.0;
+}
+
+void Vector3D::modify(float inputx, float inputy, float inputz) {
+	x = inputx;
+	y = inputy;
+	z = inputz;
+}
+
+void Vector3D::modify(Vector3D copy) {
+	x = copy.x;
+	y = copy.y;
+	z = copy.z;
+}
+
+
 float Vector3D::magnitude(){
 	return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));	
 }
