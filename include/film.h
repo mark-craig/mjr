@@ -17,7 +17,7 @@ public:
 
 	// methods
 	void commit(Sample sample, Vector3D color);
-	void display_film(const char* window_name = "");
+	void display_film(const char* window_name = "mjr");
 	void write_film();
 	// writeColor
 

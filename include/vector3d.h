@@ -17,6 +17,9 @@ public:
 	Vector3D();
 	Vector3D(float inputx, float inputy, float inputz);
 	// other methods
+	void zero_out();
+	void modify(float inputx, float inputy, float inputz);
+	void modify(Vector3D copy);
 	float magnitude();
 	Vector3D normalize();
 	Vector3D scale(float scalefactor);
