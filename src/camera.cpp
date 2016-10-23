@@ -1,6 +1,5 @@
 #include "camera.h"
-#include "sample.h"
-#include "vector3d.h"
+#include <vector>
 
 using namespace std;
 
@@ -18,11 +17,7 @@ Camera::Camera() {
 	urx = 1.0; ury = 1.0; urz = -1.0;
 
 	// vectors for imageplane
-	Vector3D ur = Vector3D(urx, ury, urz);
-	Vector3D ul = Vector3D(ulx, uly, ulz);
-	Vector3D ll = Vector3D(llx, lly, llz);
-	Vector3D lr = Vector3D(lrx, lry, lrz);
-
+	getImagePlaneVectors();
 }
 
 Camera::Camera(float ix, float iy, float iz,
@@ -40,31 +35,36 @@ Camera::Camera(float ix, float iy, float iz,
 	ulx = iulx; uly = iuly; ulz = iulz;
 	// upper right
 	urx = iurx; ury = iury; urz = iurz;
+
+	// vectors for imageplane
+	getImagePlaneVectors();
 }
+
+void Camera::getImagePlaneVectors() {
+	ur = Vector3D(urx, ury, urz);
+	ul = Vector3D(ulx, uly, ulz);
+	ll = Vector3D(llx, lly, llz);
+	lr = Vector3D(lrx, lry, lrz);
+}
+
 
 Vector3D Camera::getPosition() {
 	return Vector3D(x, y, z);
 }
 
 Vector3D Camera::getCenterOfImagePlane() {
-	Vector3D ur = Vector3D(urx, ury, urz);
-	Vector3D ul = Vector3D(ulx, uly, ulz);
-	Vector3D ll = Vector3D(llx, lly, llz);
-	Vector3D lr = Vector3D(lrx, lry, lrz);
-
+	// average all the vectors to find the center
+	return ur.add(ul.add(ll.add(lr))).scale(0.25);
 }
 
-
-
-void Camera::generateRay(Sample sample, Ray &ray, int nx, int ny) {
-	Vector3D ur = Vector3D(urx, ury, urz);
-	Vector3D ul = Vector3D(ulx, uly, ulz);
-	Vector3D ll = Vector3D(llx, lly, llz);
-	Vector3D lr = Vector3D(lrx, lry, lrz);
-	// add the vectors of the corners together and scale by 1/4
-	Vector3D ipc = ur.add(ul.add(ll.add(lr))).scale(0.25);
-
+vector<Vector3D> Camera::getBasisWUV() {
+	// Shirley, Marschner pg. 75
+	// ....some assumptions here
+	// A) top of plane and bottom are the same width, same for left and right lengths
+	// B) u and v will always meet in the middle
+	// I think these are all safe for now
 	Vector3D e = getPosition();
+	Vector3D ipc = getCenterOfImagePlane();
 	// w is the vector pointing behind the camera.
 	// the rays travel out from the camera in -w
 	Vector3D w = ipc.subtract(e).normalize();
@@ -73,20 +73,29 @@ void Camera::generateRay(Sample sample, Ray &ray, int nx, int ny) {
 	Vector3D up_vector = Vector3D(0, 1, 0);
 	Vector3D u = w.cross(up_vector).normalize();
 	Vector3D v = u.cross(w).normalize();
+	vector<Vector3D> result;
+	result.push_back(w);
+	result.push_back(u);
+	result.push_back(v);
+	return result;
+}
 
-	// Shirley, Marschner pg. 75
-	// ....two assumptions here
-	// A) top of plane and bottom are the same width, same for left and right lengths
-	// B) u and v will always meet in the middle
-	// C) l = – r and b = – t, "Many systems assume"
-	// I think these are both safe for now
+void Camera::generateRay(Sample sample, Ray &ray, int nx, int ny) {
+	// Another assumption
+	// l = – r and b = – t, "Many systems assume"
+	Vector3D e = getPosition();
+	vector<Vector3D> basis = getBasisWUV();
+	Vector3D w = basis[0];
+	Vector3D u = basis[1];
+	Vector3D v = basis[2];
+
 	float l = ur.subtract(ul).magnitude()/2.0;
 	float b = ur.subtract(lr).magnitude()/2.0;
-	float pixel_u = l + (-2.0*l)*(sample.x + 0.5)/nx; // dimensions hard-coded
+	float pixel_u = l + (-2.0*l)*(sample.x + 0.5)/nx;
 	float pixel_v = b + (-2.0*b)*(sample.y + 0.5)/ny;
 
 	Vector3D origin = e.add(u.scale(pixel_u).add(v.scale(pixel_v)));
 	Vector3D neg_w = w.scale(-1.0f);
-	Ray result = Ray(origin, neg_w);
+	ray = Ray(origin, neg_w);
 }
 

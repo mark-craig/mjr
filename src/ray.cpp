@@ -1,6 +1,7 @@
 #include "ray.h"
 #include "camera.h"
 
+Ray::Ray() {}
 Ray::Ray(Vector3D position, Vector3D direction, float tMinimum, float tMaximum) {
 	pos = position;
 	dir = direction.normalize();

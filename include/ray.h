@@ -9,6 +9,7 @@ public:
 	float t_max;
 
 	//constructor
+	Ray();
 	Ray(Vector3D position, Vector3D direction, float tMinimum=0.0f, float tMaximum=FLT_MAX);
 
 	//methods
