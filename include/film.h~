@@ -5,7 +5,7 @@ public:
 	// fields
 	int x;
 	int y;
-	cimg_library::CImg<float> image;
+	
 
 	// constructors
 	Film();
