@@ -1,4 +1,8 @@
 #pragma once
+#include "sample.h"
+#include "sampler.h"
+#include "vector3d.h"
+#include <string>
 #include "CImg.h"
 class Film {
 public:
@@ -12,7 +16,9 @@ public:
 	Film(int x, int y);
 
 	// methods
-	void display_film();
+	void commit(Sample sample, Vector3D color);
+	void display_film(const char* window_name = "");
+	void write_film();
 	// writeColor
 
 };

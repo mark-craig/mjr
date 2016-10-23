@@ -1,10 +1,7 @@
-#include <cmath>
-#include <iostream>
 #include "vector3d.h"
 using namespace std;
 
-
-// functions for vectors
+// constructors
 Vector3D::Vector3D() {
 	x = 0.0;
 	y = 0.0;
@@ -17,7 +14,9 @@ Vector3D::Vector3D(float inputx, float inputy, float inputz) {
 	z = inputz;
 }
 
+// methods
 float Vector3D::magnitude(){
+	// returns the magnitude of the vector
 	return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));	
 }
 	
@@ -75,3 +74,7 @@ float Vector3D::getTheta(Vector3D v2) {
 	return acos(cosTheta);
 }
 
+vector<float> Vector3D::value() {
+	vector<float> result = {x, y, z};
+	return result;
+}

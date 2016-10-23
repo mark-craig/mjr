@@ -3,6 +3,7 @@
 #include "sample.h"
 #include "ray.h"
 #include <vector>
+
 using namespace std;
 
 class Camera

@@ -1,11 +1,7 @@
-#include <ctime>
-#include <cstdlib>
-#include "CImg.h"
+#include "gtest/gtest.h"
 #include "film.h"
 
-using namespace cimg_library;
-
-int main() {
+TEST(FilmTest, FilmWritesSampledNoise) {
   Film film = Film(700 , 500);
   Sample sample;
   Sampler sampler = Sampler(700, 500);
@@ -17,5 +13,7 @@ int main() {
     color = Vector3D(random, random, random);
     film.commit(sample, color);
   }
-  film.display_film();
+  film.display_film("This window should display noise. Close to continue.");
+  EXPECT_EQ(1,1);
 }
+

@@ -1,4 +1,10 @@
 #pragma once
+#include <cmath>
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
 class Vector3D
 {
 public:
@@ -20,5 +26,6 @@ public:
 	Vector3D cross(Vector3D v2);
 	Vector3D project(Vector3D v2);
 	float getTheta(Vector3D v2);
+	vector<float> value();
 };
 
