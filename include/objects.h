@@ -9,7 +9,7 @@ class Object {
 public:
 	// methods
 	// =0 at the end makes it a pure virtual function
-	virtual bool intersect(Ray &ray, Intersection &intersection) =0;
+	virtual bool intersect(Ray ray, Intersection &intersection) =0;
 	// members
 	Vector3D center;
 };
@@ -20,7 +20,7 @@ public:
 	// constructor
 	Sphere();
 	Sphere(Vector3D center, float radius);
-	bool intersect(Ray &ray, vector<Intersection> &intersection);
+	bool intersect(Ray ray, Intersection &intersection);
 	//members
 	float radius;
 };
@@ -28,16 +28,16 @@ public:
 class PolygonMesh:public Object {
 	// polygon mesh is a
 	PolygonMesh();
-	bool intersect(Ray &ray, vector<Intersection> intersection);
+	bool intersect(Ray ray, Intersection &intersection);
 };
 
 class CombinedObject:public Object {
 	CombinedObject();
-	bool intersect(Ray &ray, vector<Intersection> &intersection);
+	bool intersect(Ray ray, Intersection &intersection);
 };
 
 class Polygon:public Object {
 	Polygon();
-	bool intersect(Ray &ray, vector<Intersection> &intersection);
+	bool intersect(Ray ray, Intersection &intersection);
 
 };

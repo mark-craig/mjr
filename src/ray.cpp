@@ -21,3 +21,12 @@ Vector3D Ray::t(float time) {
 	return pos.add(dir.scale(time));
 }
 
+bool Ray::valid_t(float time) {
+	if (time < t_min) {
+		return false;
+	} else if (time > t_max) {
+		return false;
+	} else {
+		return true;
+	}
+}

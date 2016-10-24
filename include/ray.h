@@ -14,4 +14,5 @@ public:
 
 	//methods
 	Vector3D t(float time);
+	bool valid_t(float time);
 };
