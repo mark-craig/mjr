@@ -15,21 +15,38 @@ Vector3D::Vector3D(float inputx, float inputy, float inputz) {
 }
 
 void Vector3D::zero_out() {
-	x = 0.0;
-	y = 0.0;
-	z = 0.0;
+	// zero's out the 3D vector
+	this->x = 0.0;
+	this->y = 0.0;
+	this->z = 0.0;
 }
 
 void Vector3D::modify(float inputx, float inputy, float inputz) {
-	x = inputx;
-	y = inputy;
-	z = inputz;
+	// modify the values of the Vector
+	this->x = inputx;
+	this->y = inputy;
+	this->z = inputz;
 }
 
 void Vector3D::modify(Vector3D copy) {
-	x = copy.x;
-	y = copy.y;
-	z = copy.z;
+	// deep copy of the original Vector
+	this->x = copy.x;
+	this->y = copy.y;
+	this->z = copy.z;
+}
+Vector3D Vector3D::multiplytwo(Vector3D other) {
+	// multiply two vectors together
+	float tempx = this->x * other.x;
+	float tempy = this->y * other.y;
+	float tempz = this->z * other.z;
+	return Vector3D(tempx, tempy, tempz);
+}
+bool Vector3D::iszero() {
+	// returns true if the vector has a magnitude of 0
+	if (this->x == 0.0 && this->y == 0.0 && this->z == 0.0) {
+		return true;
+	}
+	return false;
 }
 
 float Vector3D::magnitude(){
