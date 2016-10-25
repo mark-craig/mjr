@@ -1,21 +1,12 @@
-#include <ctime>
-#include <cstdlib>
-#include "CImg.h"
-#include "film.h"
-
-using namespace cimg_library;
-
-int main() {
-  Film film = Film(700 , 500);
-  Sample sample;
-  Sampler sampler = Sampler(700, 500);
-  Vector3D color;
-  srand(time(NULL));
-  int random;
-  while(sampler.getSample(sample)) {
-    random = (rand() % 256);
-    color = Vector3D(random, random, random);
-    film.commit(sample, color);
-  }
-  film.display_film();
+#include <iostream>
+#include <Eigen/Dense>
+using Eigen::MatrixXd;
+int main()
+{
+  MatrixXd m(2,2);
+  m(0,0) = 3;
+  m(1,0) = 2.5;
+  m(0,1) = -1;
+  m(1,1) = m(1,0) + m(0,1);
+  std::cout << m << std::endl;
 }
