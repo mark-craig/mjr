@@ -1,5 +1,7 @@
 #pragma once
 #include "vector3d.h"
+#include "ray.h"
+
 class Light
 {
 public:
@@ -22,4 +24,5 @@ public:
 	// other methods
 	Vector3D getVector();
 	Vector3D getColor();
+	Ray generateLightRay(Vector3D inposition, Vector3D innormal);
 };

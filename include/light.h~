@@ -1,4 +1,7 @@
 #pragma once
+#include "vector3d.h"
+#include "ray.h"
+
 class Light
 {
 public:
