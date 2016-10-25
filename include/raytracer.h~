@@ -1,17 +1,25 @@
 #pragma once
-#include "scene.h"
 #include "ray.h"
 #include "intersection.h"
 #include "objects.h"
+#include "vector3d.h"
+#include "raytracer.h"
+#include "material.h"
+#include "progress_bar.hpp"
+#include <vector>
+
 
 class RayTracer {
 public:
 	// Constructor
-	RayTracer(Scene the_scene);
+	RayTracer(int inumlights, int inumobjects,
+			  vector<Light*> ilightiter, vector<Object*> iobjectiter);
 	// values
 	int threshhold;
-	Scene scene;
-	void trace(Ray ray, int depth);
-	bool intersection(Ray ray, Intersection &in, Object &primitive);
-	bool intersection(Ray ray, Object &primitive);
+	int numlights; int numobjects;
+	vector<Light*> lightiter; 
+	vector<Object*> objectiter;
+	Vector3D trace(Ray ray, int depth);
+	bool interceptsObject(Ray ray, Intersection &in, Object* primitive);
+	bool intersection(Ray ray);
 };

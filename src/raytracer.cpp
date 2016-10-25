@@ -1,4 +1,5 @@
 #include "raytracer.h"
+#include <iostream>
 
 RayTracer::RayTracer(int inumlights, int inumobjects,
 					 vector<Light*> ilightiter, vector<Object*> iobjectiter) {
@@ -12,16 +13,18 @@ RayTracer::RayTracer(int inumlights, int inumobjects,
 Vector3D RayTracer::trace(Ray ray, int depth) {
 	// trace the given ray depth# of bounces. Output the resulting color perceived..
 	Vector3D black = Vector3D(0,0,0);
+	Vector3D white = Vector3D(1, 1, 1);
 	// if we have bounced more than threshold, color is black
 	if (depth > threshhold) {
  		return black;
  	}
  	Intersection in;
- 	Object* primitive;
+ 	Object** primitive;
  	// if we do not hit any objects in the scene, color is black
  	if (!interceptsObject(ray, in, primitive)) {
  		return black;
 	}
+	return white;
 	// otherwise we now have the correct intersection and object
  	// brdf will be obtained from Material's shading method
  	//==== I think these lines can be deleted ====
@@ -36,7 +39,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 		Ray lray = lightiter[i]->generateLightRay(in.position, in.normal); // generate a light ray for the point
 		if (!intersection(lray)) { // if nothing intersects the light ray before it hits the point
 			// get the color that is added _from_the_single_light_ray_
-			Vector3D shadingFromLight = primitive->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
+			Vector3D shadingFromLight = (*primitive)->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
 		}
 	}
@@ -49,7 +52,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 	// return color;
 }
 
-bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object* primitive) {
+bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) {
 	// find the closest intersection if there is one, capture the Interception and the Object
 	Intersection temp;
 	float best_time = -1;
@@ -60,12 +63,12 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object* primitive) {
 				// this is our first hit, best time by default
 				best_time = temp.time; // intersection stores hittime!
 				in = temp; // capture the intersection
-				primitive = objectiter[i]; // capture the object
+				*primitive = objectiter[i]; // capture the object
 			} else if (temp.time < best_time && temp.time >= 0) {
 				// new closest intersection
 				best_time = temp.time; 
 				in = temp; // capture interception
-				primitive = objectiter[i]; // capture object
+				*primitive = objectiter[i]; // capture object
 			}
 		}
 	}
