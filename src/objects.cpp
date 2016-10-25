@@ -65,7 +65,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 			t = t1;
 		} else {
 			// both within bounds, find closest intersection
-			float t = min(t1, t2);
+			t = min(t1, t2);
 		}
 		
 		intersection.position = ray.t(t);
