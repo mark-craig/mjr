@@ -10,7 +10,6 @@ public:
 	BRDF calculateBRDF();
 	// fields
 	BRDF brdf;
-	Material();
 	Material(BRDF ibrdf);
 };
 
