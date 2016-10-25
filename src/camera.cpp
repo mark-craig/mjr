@@ -80,6 +80,10 @@ vector<Vector3D> Camera::getBasisWUV() {
 	return result;
 }
 
+Vector3D Camera::getViewVector() {
+	return getBasisWUV()[2];
+}
+
 void Camera::generateRay(Sample sample, Ray &ray, int nx, int ny) {
 	// Another assumption
 	// l = – r and b = – t, "Many systems assume"

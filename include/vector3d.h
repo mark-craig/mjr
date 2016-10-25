@@ -20,7 +20,7 @@ public:
 	void zero_out();
 	void modify(float inputx, float inputy, float inputz);
 	void modify(Vector3D copy);
-	Vector3D multiplytwo(Vector3D other);
+	Vector3D multiply(Vector3D other);
 	bool iszero();
 	float magnitude();
 	Vector3D normalize();

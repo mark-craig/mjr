@@ -3,6 +3,7 @@
 #include "ray.h"
 #include "intersection.h"
 #include "objects.h"
+#include "vector3d.h"
 #include <vector>
 
 class RayTracer {
@@ -16,6 +17,6 @@ public:
 	vector<Light> lightiter; vector<Object> objectiter;
 	Scene scene;
 	Vector3D trace(Ray ray, int depth);
-	bool intersection(Ray ray, Intersection &in, Object &primitive);
+	bool interceptsObject(Ray ray, Intersection &in, Object &primitive);
 	bool intersection(Ray ray);
 };

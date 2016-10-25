@@ -24,8 +24,7 @@ void Scene::render(int x, int y) {
 	Sampler sampler = Sampler(x, y);
 	Film film = Film(x, y);
 	Sample sample = Sample();
-	Camera camera = Camera();
-	RayTracer raytracer = RayTracer(this->numlights, this->numobjects, this->lightiter, this->objectiter);
+	RayTracer raytracer = RayTracer(numlights, numobjects, lightiter, objectiter);
 	while(sampler.getSample(sample)) {
 		Ray ray = Ray();
 		camera.generateRay(sample, ray, -1, -1);
@@ -44,3 +43,7 @@ void Scene::addObject(Object object) {
 	this->objectiter.push_back(object);
 	this->numobjects += 1;
 }
+void Scene::addCamera(Camera sceneCamera) {
+	camera = sceneCamera;
+}
+

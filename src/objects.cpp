@@ -7,6 +7,11 @@ void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();
 }
 
+bool Object::intersect(Ray ray, Intersection &intersection) {
+	// ABSTRACT METHOD, THIS SHOULD NEVER BE CALLED !!!!!
+	return false;
+}
+
 Sphere::Sphere(Vector3D icenter, float iradius) {
 	center = icenter;
 	radius = iradius;
@@ -47,4 +52,8 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		intersection.time = t;
 		return true;
 	}
+}
+
+bool Polygon::intersect(Ray ray, Intersection &intersection) {
+	
 }

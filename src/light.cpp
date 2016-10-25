@@ -4,8 +4,6 @@
 #include <cfloat>
 // functions for lights
 Light::Light() {
-	pointLight = false;
-	directionalLight = false;
 	x = 0.0;
 	y = 0.0;
 	z = 0.0;
@@ -13,14 +11,7 @@ Light::Light() {
 	g = 0.0;
 	b = 0.0;
 }
-Light::Light(double ix, double iy, double iz, double ir, double ig, double ib, int flag) {
-	if (flag == 0) {
-		pointLight = true;
-		directionalLight = false;
-	} else if (flag == 1) {
-		directionalLight = true;
-		pointLight = false;
-	}
+Light::Light(double ix, double iy, double iz, double ir, double ig, double ib) {
 	x = ix;
 	y = iy;
 	z = iz;
@@ -32,21 +23,47 @@ Light::Light(double ix, double iy, double iz, double ir, double ig, double ib, i
 Vector3D Light::getVector() {
 	return Vector3D(x, y, z);
 }
+Vector3D Light::getLightVector(Vector3D point) {
+	return Vector3D(x, y, z); // this should never be called.
+	// see Light subclasses below for implementations.
+}
 Vector3D Light::getColor() {
 	return Vector3D(r, g, b);
 }
 
 Ray Light::generateLightRay(Vector3D inposition, Vector3D innormal) {
-	Vector3D direction;
-	float time_to;
-	if (this->directionalLight) {
-		Vector3D direction = this->getVector().scale(-1).normalize();
-		float time_to = FLT_MAX;
-	}
-	if (this->pointLight) {
-		Vector3D direction_temp = this->getVector().subtract(inposition);
-		float time_to = direction_temp.magnitude();
-		Vector3D direction = direction_temp.normalize();
-	}
+	// === THIS SHOULD NEVER BE CALLED ======
+	Vector3D direction_temp = getVector().subtract(inposition);
+	float time_to = direction_temp.magnitude();
+	Vector3D direction = direction_temp.normalize();
 	return Ray(inposition, direction, 0.0f, time_to);
+
+}
+
+Vector3D PointLight::getLightVector(Vector3D point) {
+	// l is the difference between the position of the light and the intersection point
+	Vector3D l = getVector().subtract(point).normalize();
+}
+
+Ray PointLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
+	// generate light ray for a point light
+	Vector3D direction_temp = getVector().subtract(inposition);
+	float time_to = direction_temp.magnitude();
+	Vector3D direction = direction_temp.normalize();
+	return Ray(inposition, direction, 0.0f, time_to);
+
+}
+
+Vector3D DirectionalLight::getLightVector(Vector3D point) {
+	// l is simply the normalized vector in the direction of the light
+	// the point is not taken into account
+	Vector3D l = getVector().normalize();// .scale(-1); I think this was an error
+}
+
+Ray DirectionalLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
+	// generate light ray for a directional light
+	float time_to = FLT_MAX;
+	Vector3D direction = getVector().scale(-1).normalize();
+	return Ray(inposition, direction, 0.0f, time_to);
+
 }

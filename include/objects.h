@@ -5,6 +5,7 @@
 #include "ray.h"
 
 class Object {
+	// ====== THIS IS AN ABSTRACT CLASS AND SHOULD NOT BE USED DIRECTLY =======
 	// a shape is anything that can be rendered in the 3D space, whether it is defined
 	// by a mathematical function or a collection of primitives
 public:

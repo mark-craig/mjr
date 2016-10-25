@@ -31,6 +31,7 @@ public:
 	Vector3D getPosition();
 	Vector3D getCenterOfImagePlane();
 	vector<Vector3D> getBasisWUV();
+	Vector3D getViewVector();
 	void getImagePlaneVectors();
 	void generateRay(Sample sample, Ray &ray, int nx, int ny);
 
