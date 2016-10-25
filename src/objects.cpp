@@ -1,7 +1,26 @@
 #include "objects.h"
 #include <cmath>
+#include <iostream>
 
 Object::Object() {}
+
+void Object::addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float sp) {
+	Material newmat = Material();
+	newmat.anisotropic = false;
+	BRDF newbrdf = BRDF(ka, kd, ks, Vector3D(0.0, 0.0, 0.0)); //will replace when reflection implemented
+	newmat.brdf = newbrdf;
+	newmat.sp = sp;
+}
+void Object::addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float spv) {
+	Material newmat = Material();
+	newmat.anisotropic = true;
+	BRDF newbrdf = BRDF(ka, kd, ks, Vector3D(0.0, 0.0, 0.0)); //will replace when reflection implemented
+	newmat.brdf = newbrdf;
+	newmat.spu = spu;
+	newmat.spv = spv;
+}
+
+
 
 void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();
@@ -9,6 +28,7 @@ void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 
 bool Object::intersect(Ray ray, Intersection &intersection) {
 	// ABSTRACT METHOD, THIS SHOULD NEVER BE CALLED !!!!!
+	// cout << "returning false :(" << endl;
 	return false;
 }
 
@@ -27,6 +47,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 	float C = e.subtract(c).dot(e.subtract(c)) - pow(radius, 2);
 	float discriminant = pow(B, 2) - A*C;
 	if (discriminant < 0) {
+		cout << "discriminant < 0" << endl;
 		return false;
 	} else {
 		float t1 = (-B + sqrt(discriminant))/pow(A, 2);
@@ -34,6 +55,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		float t;
 		if (!ray.valid_t(t1) and !ray.valid_t(t2)) {
 			// roots exist, but outside of bounds
+			cout << "both roots outside of bounds" << endl;
 			return false;
 		}
 		if (!ray.valid_t(t1) and ray.valid_t(t2)) {
@@ -50,6 +72,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		intersection.position = ray.t(t);
 		intersection.normal = intersection.position.subtract(center);
 		intersection.time = t;
+		cout << "returning true" << endl;
 		return true;
 	}
 }

@@ -32,7 +32,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	Vector3D color = Vector3D();
  	Light currentLight;
  	// for every light in the scene, generate its ray to the point
- 	for (int i = 0; i < numlights; i += 1) {
+ 	for (int i = 0; i < numlights; i++) {
 		Ray lray = lightiter[i].generateLightRay(in.position, in.normal); // generate a light ray for the point
 		if (!intersection(lray)) { // if nothing intersects the light ray before it hits the point
 			// get the color that is added _from_the_single_light_ray_
@@ -54,7 +54,7 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object &primitive) {
 	Intersection temp;
 	float best_time = -1;
 	// for every object in the scene, check if ray intersects it
-	for (int i = 0; i < numobjects; i += i) {
+	for (int i = 0; i < numobjects; i++) {
 		if (objectiter[i].intersect(ray, temp)) {
 			if (best_time == -1) {
 				// this is our first hit, best time by default

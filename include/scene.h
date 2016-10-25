@@ -9,6 +9,7 @@
 #include "film.h"
 #include "camera.h"
 #include "raytracer.h"
+#include "progress_bar.hpp"
 #include <vector>
 
 

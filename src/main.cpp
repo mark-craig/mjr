@@ -2,4 +2,28 @@
 
 int main()
 {
+	// THE FIRST TEST
+	// A wonderful scene
+	Scene main_scene = Scene();
+	// With an awesome sphere
+	Sphere ball = Sphere(Vector3D(0.0f, 0.0f, 0.0f), 0.3f);
+	
+	Vector3D ka = Vector3D(0.0, 0.0, 0.0);
+	Vector3D kd = Vector3D(1.0, 0.0, 0.0);
+	Vector3D ks = Vector3D(0.5, 0.5, 0.5);
+	ball.addMaterial(ka, kd, ks, 0.3);
+
+	// A camera for the screen
+	Camera camera = Camera();
+	// And a light right here
+	Light PointLight(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+
+	main_scene.addLight(PointLight);
+	main_scene.addCamera(camera);
+	main_scene.addObject(ball);
+
+
+	// hold onto your butts
+	main_scene.render(700, 500);
+
 }

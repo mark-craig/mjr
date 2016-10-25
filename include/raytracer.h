@@ -5,6 +5,7 @@
 #include "vector3d.h"
 #include "raytracer.h"
 #include "material.h"
+#include "progress_bar.hpp"
 #include <vector>
 
 
