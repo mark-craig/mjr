@@ -4,8 +4,6 @@
 #include "light.h"
 
 class Material {
-public:
-	Material();
 	// all materials are phong shaders at the moment.
 	BRDF calculateBRDF();
 	// fields
@@ -14,5 +12,5 @@ public:
 	Material(BRDF ibrdf);
 };
 
-Vector3D shading(Vector3D view, Vector3D position, Vector3D normal,
+Vector3D shading(Vector3D view, Vector3d position, Vector3D normal,
 		 BRDF this_brdf, Light light);

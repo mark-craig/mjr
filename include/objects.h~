@@ -10,9 +10,9 @@ class Object {
 public:
 	// methods
 	// =0 at the end makes it a pure virtual function
-	Object();
- 	bool intersect(Ray ray, Intersection &intersection);
-	void getBRDF(Vector3D position, Vector3D normal, BRDF &brdf);
+	Object() =0;
+	virtual bool intersect(Ray ray, Intersection &intersection) =0;
+	void getBRDF(Vector3D position, Vector3D normal);
 	// members
 	Vector3D center;
 	Material material;

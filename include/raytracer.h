@@ -1,5 +1,8 @@
 #pragma once
 #include "scene.h"
+#include "ray.h"
+#include "intersection.h"
+#include "objects.h"
 
 class RayTracer {
 public:
@@ -8,5 +11,7 @@ public:
 	// values
 	int threshhold;
 	Scene scene;
-	void trace(Ray ray, int depth);
-}
+	Vector3D trace(Ray ray, int depth);
+	bool intersection(Ray ray, Intersection &in, Object &primitive);
+	bool intersection(Ray ray, Object &primitive);
+};
