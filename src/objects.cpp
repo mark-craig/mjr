@@ -1,6 +1,8 @@
 #include "objects.h"
 #include <cmath>
 
+Object::Object() {}
+
 void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();
 }
