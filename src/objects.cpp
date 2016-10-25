@@ -1,6 +1,10 @@
 #include "objects.h"
 #include <cmath>
 
+void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
+	brdf = material.calculateBRDF();
+}
+
 Sphere::Sphere(Vector3D icenter, float iradius) {
 	center = icenter;
 	radius = iradius;

@@ -1,4 +1,5 @@
 #pragma once
+#include "material.h"
 #include "vector3d.h"
 #include "intersection.h"
 #include "ray.h"
@@ -7,12 +8,14 @@ class Object {
 	// a shape is anything that can be rendered in the 3D space, whether it is defined
 	// by a mathematical function or a collection of primitives
 public:
-	virtual ~Object() =0;
 	// methods
 	// =0 at the end makes it a pure virtual function
+	virtual ~Object() =0;
 	virtual bool intersect(Ray ray, Intersection &intersection) =0;
+	void getBRDF(Vector3D position, Vector3D normal);
 	// members
 	Vector3D center;
+	Material material;
 };
 
 class Sphere:public Object {
