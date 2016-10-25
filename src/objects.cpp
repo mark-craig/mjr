@@ -26,11 +26,11 @@ void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();
 }
 
-bool Object::intersect(Ray ray, Intersection &intersection) {
-	// ABSTRACT METHOD, THIS SHOULD NEVER BE CALLED !!!!!
-	// cout << "returning false :(" << endl;
-	return false;
-}
+// bool Object::intersect(Ray ray, Intersection &intersection) {
+// 	// ABSTRACT METHOD, THIS SHOULD NEVER BE CALLED !!!!!
+// 	cout << "ERROR: ABSTRACT METHOD WAS CALLED SOMEHOW" << endl;
+// 	return false;
+// }
 
 Sphere::Sphere(Vector3D icenter, float iradius) {
 	center = icenter;
@@ -55,7 +55,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		float t;
 		if (!ray.valid_t(t1) and !ray.valid_t(t2)) {
 			// roots exist, but outside of bounds
-			cout << "both roots outside of bounds" << endl;
+			// cout << "both roots outside of bounds" << endl;
 			return false;
 		}
 		if (!ray.valid_t(t1) and ray.valid_t(t2)) {
@@ -72,7 +72,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		intersection.position = ray.t(t);
 		intersection.normal = intersection.position.subtract(center);
 		intersection.time = t;
-		cout << "returning true" << endl;
+		// cout << "returning true" << endl;
 		return true;
 	}
 }

@@ -29,7 +29,7 @@ void Scene::render(int x, int y) {
 	film.display_film();
 };
 
-void Scene::addLight(Light light) {
+void Scene::addLight(Light* light) {
 	this->lightiter.push_back(light);
 	this->numlights += 1;
 }

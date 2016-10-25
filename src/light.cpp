@@ -11,33 +11,34 @@ Light::Light() {
 	g = 0.0;
 	b = 0.0;
 }
-Light::Light(double ix, double iy, double iz, double ir, double ig, double ib) {
+
+Vector3D Light::getVector() {
+	return Vector3D(x, y, z);
+}
+Vector3D Light::getColor() {
+	return Vector3D(r, g, b);
+}
+
+// Vector3D Light::getLightVector(Vector3D point) {
+// 	return Vector3D(x, y, z); // this should never be called.
+// 	// see Light subclasses below for implementations.
+
+// Ray Light::generateLightRay(Vector3D inposition, Vector3D innormal) {
+// 	// === THIS SHOULD NEVER BE CALLED ======
+// 	Vector3D direction_temp = getVector().subtract(inposition);
+// 	float time_to = direction_temp.magnitude();
+// 	Vector3D direction = direction_temp.normalize();
+// 	return Ray(inposition, direction, 0.0f, time_to);
+
+// }
+
+PointLight::PointLight(double ix, double iy, double iz, double ir, double ig, double ib) {
 	x = ix;
 	y = iy;
 	z = iz;
 	r = ir;
 	g = ig;
 	b = ib;
-}
-
-Vector3D Light::getVector() {
-	return Vector3D(x, y, z);
-}
-Vector3D Light::getLightVector(Vector3D point) {
-	return Vector3D(x, y, z); // this should never be called.
-	// see Light subclasses below for implementations.
-}
-Vector3D Light::getColor() {
-	return Vector3D(r, g, b);
-}
-
-Ray Light::generateLightRay(Vector3D inposition, Vector3D innormal) {
-	// === THIS SHOULD NEVER BE CALLED ======
-	Vector3D direction_temp = getVector().subtract(inposition);
-	float time_to = direction_temp.magnitude();
-	Vector3D direction = direction_temp.normalize();
-	return Ray(inposition, direction, 0.0f, time_to);
-
 }
 
 Vector3D PointLight::getLightVector(Vector3D point) {

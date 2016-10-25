@@ -20,11 +20,11 @@ public:
 	Scene();
 	// methods
 	void render(int x, int y);
-	void addLight(Light light);
+	void addLight(Light* light);
 	void addObject(Object* object);
 	void addCamera(Camera sceneCamera);
 	//items
-	vector<Light> lightiter;
+	vector<Light*> lightiter;
 	int numlights;
 	vector<Object*> objectiter;
 	int numobjects;

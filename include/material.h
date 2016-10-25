@@ -19,7 +19,7 @@ public:
 	Material(BRDF ibrdf, float isp);
 	Material(BRDF ibrdf, float ispu, float ispv);
 	// Justin I'm putting this in the class because it's not finding it otherwise
-	Vector3D shade(Vector3D view, Vector3D position, Vector3D normal, Light light);
+	Vector3D shade(Vector3D view, Vector3D position, Vector3D normal, Light* light);
 
 	// adding these for testing and abstraction
 	Vector3D shadeAmbient(Vector3D ka, Vector3D lightColor);

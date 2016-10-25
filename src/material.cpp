@@ -31,7 +31,7 @@ BRDF Material::calculateBRDF() {
 	return this->brdf;
 }
 
-Vector3D Material::shade(Vector3D view, Vector3D position, Vector3D normal, Light light) {
+Vector3D Material::shade(Vector3D view, Vector3D position, Vector3D normal, Light* light) {
 	// calculate the total effect of this light on the color value
 	
 	// will return result at the end
@@ -40,8 +40,8 @@ Vector3D Material::shade(Vector3D view, Vector3D position, Vector3D normal, Ligh
 	BRDF this_brdf = calculateBRDF();
 
 	// get relevant vectors from the light
-	Vector3D l = light.getLightVector(position);
-	Vector3D I = light.getColor();
+	Vector3D l = light->getLightVector(position);
+	Vector3D I = light->getColor();
 
 	// mix in ambient
 	result.add(shadeAmbient(this_brdf.ka, I));

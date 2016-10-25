@@ -12,7 +12,7 @@ public:
 	// methods
 	// =0 at the end makes it a pure virtual function
 	Object();
- 	virtual bool intersect(Ray ray, Intersection &intersection);
+ 	virtual bool intersect(Ray ray, Intersection &intersection) =0;
  	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float sp);
  	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float spv);
 	void getBRDF(Vector3D position, Vector3D normal, BRDF &brdf);

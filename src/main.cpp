@@ -17,9 +17,10 @@ int main()
 	// A camera for the screen
 	Camera camera = Camera();
 	// And a light right here
-	Light PointLight(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+	PointLight light = PointLight(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+	PointLight* light_ptr = &light;
 
-	main_scene.addLight(PointLight);
+	main_scene.addLight(light_ptr);
 	main_scene.addCamera(camera);
 	main_scene.addObject(ball_ptr);
 
