@@ -1,3 +1,4 @@
+#pragma once
 class Light
 {
 public:
@@ -5,17 +6,17 @@ public:
 	bool pointLight;
 	bool directionalLight;
 	//position
-	float x;
-	float y;
-	float z;
+	double x;
+	double y;
+	double z;
 	//color
-	float r;
-	float g;
-	float b;
+	double r;
+	double g;
+	double b;
 
 	//constructors
 	Light();
-	Light(float ix, float iy, float iz, float ir, float ig, float ib, int flag);
+	Light(double ix, double iy, double iz, double ir, double ig, double ib, int flag);
 
 	// other methods
 	Vector3D getVector();

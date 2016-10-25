@@ -18,11 +18,12 @@ Color RayTracer::trace(Ray ray, int depth) {
 = 	if (!this->intersection(ray, in);) {
  		return black
 	}
- 	Material brdf; in.object->getBRDF(in.local, brdf);
+ 	BRDF brdf;
+ 	in.object->getBRDF(in.postion, in.normal, brdf);
  	Vector3D color();
- 	for (int i = 0; i < the_scene.num_lights; i += 1) {
+ 	for (int i = 0; i < the_scene.numlights; i += 1) {
 		Vector3D lray(); Vector3D lcolor();
-		the_scene.lights[i].generateLightRay(in.local, &lray, &lcolor);
+		the_scene.lightiter[i].generateLightRay(in.local, &lray, &lcolor);
 		if (!this->intersection(lray, in.primitive)) {
 			color.add(shading(in.local, brdf, lray, lcolor);
 		}
@@ -36,17 +37,19 @@ Color RayTracer::trace(Ray ray, int depth) {
 	return color;
 }
 
-bool RayTracer::intersection(Ray ray, Intersection &in) {
+bool RayTracer::intersection(Ray ray, Intersection &in, Object &primitive) {
 	Intersection temp;
 	float best_time = -1;
-	for (int i = 0; i < the_scene.num_primitives; i += i) {
-		the_scene.primitives[i].intersection(ray, temp);
+	for (int i = 0; i < the_scene.numobjects; i += i) {
+		the_scene.objectiter[i].intersection(ray, temp);
 		if (best_time == -1) {
 			best_time = temp.time;
 			in = temp;
+			primitive = the_scene.objectiter[i]
 		} else if (temp->time < best_time && temp->time >= 0) {
 			best_time = temp->time;
 			in = temp;
+			primitive = the_scene.objectiter[i]
 		}
 	}
 	if (best_time != -1) {
@@ -57,8 +60,8 @@ bool RayTracer::intersection(Ray ray, Intersection &in) {
 }
 bool RayTracer::intersection(Ray ray, Primitive object) {
 	Intersection temp;
-	for (int i = 0; i < the_scene.num_primitives; i += i) {
-		the_scene.primitives[i].intersection(ray, temp);
+	for (int i = 0; i < the_scene.numobjects; i += i) {
+		the_scene.objectiter[i].intersection(ray, temp);
 		if (temp->time >= 0) {
 			return true;
 		}
