@@ -1,11 +1,13 @@
 #include "ray.h"
 #include "camera.h"
 #include "vector3d.h"
+#include <iostream>
 
 Ray::Ray() {}
 Ray::Ray(Vector3D position, Vector3D direction, float tMinimum, float tMaximum) {
 	pos = position;
 	dir = direction.normalize();
+	// std::cout<<direction.x<<','<<direction.y<<','<<direction.z<<std::endl;
 	t_min = tMinimum;
 	t_max = tMaximum;
 }

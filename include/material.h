@@ -24,7 +24,7 @@ public:
 	// adding these for testing and abstraction
 	Vector3D shadeAmbient(Vector3D ka, Vector3D lightColor);
 	Vector3D shadeDiffuse(Vector3D kd, Vector3D lightColor, Vector3D lightVector, Vector3D normal);
-	Vector3D shadeSpecular(Vector3D ks, Vector3D viewVector, Vector3D lightVector, Vector3D normal);
+	Vector3D shadeSpecular(Vector3D ks, Vector3D viewVector, Vector3D lightColor, Vector3D lightVector, Vector3D normal);
 
 };
 

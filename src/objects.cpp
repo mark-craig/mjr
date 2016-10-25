@@ -8,6 +8,7 @@ void Object::addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float sp) {
 	BRDF newbrdf = BRDF(ka, kd, ks, Vector3D(0.0, 0.0, 0.0)); //will replace when reflection implemented
 	newmat.brdf = newbrdf;
 	newmat.sp = sp;
+	material = newmat;
 }
 void Object::addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float spv) {
 	Material newmat = Material();
@@ -16,8 +17,8 @@ void Object::addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float
 	newmat.brdf = newbrdf;
 	newmat.spu = spu;
 	newmat.spv = spv;
+	material = newmat;
 }
-
 
 
 void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){

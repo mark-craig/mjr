@@ -2,6 +2,7 @@
 #include "light.h"
 #include "ray.h"
 #include <cfloat>
+#include <iostream>
 // functions for lights
 Light::Light() {
 	x = 0.0;
@@ -52,7 +53,8 @@ DirectionalLight::DirectionalLight(double ix, double iy, double iz, double ir, d
 
 Vector3D PointLight::getLightVector(Vector3D point) {
 	// l is the difference between the position of the light and the intersection point
-	Vector3D l = getVector().subtract(point).normalize();
+	Vector3D l = getVector().subtract(point).normalize().scale(-1); // light vector points to light
+	return l;
 }
 
 Ray PointLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
@@ -67,13 +69,14 @@ Ray PointLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
 Vector3D DirectionalLight::getLightVector(Vector3D point) {
 	// l is simply the normalized vector in the direction of the light
 	// the point is not taken into account
-	Vector3D l = getVector().normalize().scale(-1); // not an error, needs to point in the opposite direction
+	Vector3D l = getVector().normalize().scale(-1); //scale by -1 to point in the proper direction
+	return l;
 }
 
 Ray DirectionalLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
 	// generate light ray for a directional light
 	float time_to = FLT_MAX;
-	Vector3D direction = getVector().scale(-1).normalize();
-	return Ray(inposition, direction, 0.0f, time_to);
+	Vector3D direction = getVector().normalize().scale(-1);
+	return Ray(inposition, direction, FLT_MIN, time_to);
 
 }
