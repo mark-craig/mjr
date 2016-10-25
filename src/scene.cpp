@@ -34,7 +34,7 @@ void Scene::addLight(Light light) {
 	this->numlights += 1;
 }
 
-void Scene::addObject(Object object) {
+void Scene::addObject(Object* object) {
 	this->objectiter.push_back(object);
 	this->numobjects += 1;
 }

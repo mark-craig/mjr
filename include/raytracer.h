@@ -13,12 +13,13 @@ class RayTracer {
 public:
 	// Constructor
 	RayTracer(int inumlights, int inumobjects,
-			  vector<Light> ilightiter, vector<Object> iobjectiter);
+			  vector<Light> ilightiter, vector<Object*> iobjectiter);
 	// values
 	int threshhold;
 	int numlights; int numobjects;
-	vector<Light> lightiter; vector<Object> objectiter;
+	vector<Light> lightiter; 
+	vector<Object*> objectiter;
 	Vector3D trace(Ray ray, int depth);
-	bool interceptsObject(Ray ray, Intersection &in, Object &primitive);
+	bool interceptsObject(Ray ray, Intersection &in, Object* primitive);
 	bool intersection(Ray ray);
 };

@@ -1,7 +1,7 @@
 #include "raytracer.h"
 
 RayTracer::RayTracer(int inumlights, int inumobjects,
-					 vector<Light> ilightiter, vector<Object> iobjectiter) {
+					 vector<Light> ilightiter, vector<Object*> iobjectiter) {
 	// how many times it can bounce
 	threshhold = 1;
 	// the stuff from the scene
@@ -17,7 +17,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  		return black;
  	}
  	Intersection in;
- 	Object primitive;
+ 	Object* primitive;
  	// if we do not hit any objects in the scene, color is black
  	if (!interceptsObject(ray, in, primitive)) {
  		return black;
@@ -36,7 +36,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 		Ray lray = lightiter[i].generateLightRay(in.position, in.normal); // generate a light ray for the point
 		if (!intersection(lray)) { // if nothing intersects the light ray before it hits the point
 			// get the color that is added _from_the_single_light_ray_
-			Vector3D shadingFromLight = primitive.material.shade(ray.dir, in.position, in.normal, lightiter[i]);
+			Vector3D shadingFromLight = primitive->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
 		}
 	}
@@ -49,13 +49,13 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 	// return color;
 }
 
-bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object &primitive) {
+bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object* primitive) {
 	// find the closest intersection if there is one, capture the Interception and the Object
 	Intersection temp;
 	float best_time = -1;
 	// for every object in the scene, check if ray intersects it
 	for (int i = 0; i < numobjects; i++) {
-		if (objectiter[i].intersect(ray, temp)) {
+		if (objectiter[i]->intersect(ray, temp)) {
 			if (best_time == -1) {
 				// this is our first hit, best time by default
 				best_time = temp.time; // intersection stores hittime!
@@ -82,7 +82,7 @@ bool RayTracer::intersection(Ray ray) {
 	Intersection temp;
 	for (int i = 0; i < numobjects; i += i) {
 		// for every object, check if there is an intersection
-		if (objectiter[i].intersect(ray, temp)) {
+		if (objectiter[i]->intersect(ray, temp)) {
 			// if there was an intersection
 			if (ray.valid_t(temp.time)) { // and it is within our time limits
 			// we found an intersection

@@ -21,12 +21,12 @@ public:
 	// methods
 	void render(int x, int y);
 	void addLight(Light light);
-	void addObject(Object object);
+	void addObject(Object* object);
 	void addCamera(Camera sceneCamera);
 	//items
 	vector<Light> lightiter;
 	int numlights;
-	vector<Object> objectiter;
+	vector<Object*> objectiter;
 	int numobjects;
 	Camera camera;
 	
