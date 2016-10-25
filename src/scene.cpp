@@ -1,15 +1,4 @@
-#include "CImg.h"
 #include "scene.h"
-#include "sample.h"
-#include "sampler.h"
-#include "light.h"
-#include "objects.h"
-#include "ray.h"
-#include "vector3d.h"
-#include "film.h"
-#include "camera.h"
-#include "raytracer.h"
-#include <vector>
 
 using namespace cimg_library;
 

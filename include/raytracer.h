@@ -1,10 +1,12 @@
 #pragma once
-#include "scene.h"
 #include "ray.h"
 #include "intersection.h"
 #include "objects.h"
 #include "vector3d.h"
+#include "raytracer.h"
+#include "material.h"
 #include <vector>
+
 
 class RayTracer {
 public:
@@ -15,7 +17,6 @@ public:
 	int threshhold;
 	int numlights; int numobjects;
 	vector<Light> lightiter; vector<Object> objectiter;
-	Scene scene;
 	Vector3D trace(Ray ray, int depth);
 	bool interceptsObject(Ray ray, Intersection &in, Object &primitive);
 	bool intersection(Ray ray);

@@ -1,7 +1,4 @@
-#include "ray.h"
 #include "raytracer.h"
-#include "material.h"
-#include <vector>
 
 RayTracer::RayTracer(int inumlights, int inumobjects,
 					 vector<Light> ilightiter, vector<Object> iobjectiter) {
@@ -35,11 +32,11 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	Vector3D color = Vector3D();
  	Light currentLight;
  	// for every light in the scene, generate its ray to the point
- 	for (int i = 0; i < scene.numlights; i += 1) {
-		Ray lray = scene.lightiter[i].generateLightRay(in.position, in.normal); // generate a light ray for the point
+ 	for (int i = 0; i < numlights; i += 1) {
+		Ray lray = lightiter[i].generateLightRay(in.position, in.normal); // generate a light ray for the point
 		if (!intersection(lray)) { // if nothing intersects the light ray before it hits the point
 			// get the color that is added _from_the_single_light_ray_
-			Vector3D shadingFromLight = primitive.material.shade(ray.dir, in.position, in.normal, scene.lightiter[i]);
+			Vector3D shadingFromLight = primitive.material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
 		}
 	}
@@ -57,18 +54,18 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object &primitive) {
 	Intersection temp;
 	float best_time = -1;
 	// for every object in the scene, check if ray intersects it
-	for (int i = 0; i < scene.numobjects; i += i) {
-		if (scene.objectiter[i].intersect(ray, temp)) {
+	for (int i = 0; i < numobjects; i += i) {
+		if (objectiter[i].intersect(ray, temp)) {
 			if (best_time == -1) {
 				// this is our first hit, best time by default
 				best_time = temp.time; // intersection stores hittime!
 				in = temp; // capture the intersection
-				primitive = scene.objectiter[i]; // capture the object
+				primitive = objectiter[i]; // capture the object
 			} else if (temp.time < best_time && temp.time >= 0) {
 				// new closest intersection
 				best_time = temp.time; 
 				in = temp; // capture interception
-				primitive = scene.objectiter[i]; // capture object
+				primitive = objectiter[i]; // capture object
 			}
 		}
 	}
@@ -83,9 +80,9 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object &primitive) {
 bool RayTracer::intersection(Ray ray) {
 	// find whether there is any intersection at all. Capture nothing. (Justin is this right?)
 	Intersection temp;
-	for (int i = 0; i < scene.numobjects; i += i) {
+	for (int i = 0; i < numobjects; i += i) {
 		// for every object, check if there is an intersection
-		if (scene.objectiter[i].intersect(ray, temp)) {
+		if (objectiter[i].intersect(ray, temp)) {
 			// if there was an intersection
 			if (ray.valid_t(temp.time)) { // and it is within our time limits
 			// we found an intersection

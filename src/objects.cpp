@@ -55,5 +55,5 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 }
 
 bool Polygon::intersect(Ray ray, Intersection &intersection) {
-	
+	return false;
 }
