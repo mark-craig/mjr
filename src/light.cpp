@@ -1,8 +1,7 @@
 #include "vector3d.h"
 #include "light.h"
-
-using namespace std;
-
+#include "ray.h"
+gh
 // functions for lights
 Light::Light() {
 	pointLight = false;
@@ -35,4 +34,10 @@ Vector3D Light::getVector() {
 }
 Vector3D Light::getColor() {
 	return Vector3D(r, g, b);
+}
+
+Ray Light::generateLightRay(Vector3D inposition, Vector3D innormal) {
+	if (this->diretionalLight) {
+		Vector3D direction = this->getVector().scale(-1).normalize();
+	}
 }

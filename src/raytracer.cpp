@@ -15,14 +15,14 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  		return black;
  	}
  	float thit = 0; Intersection in; Object primitive;
- 	if (!this->intersection(ray, in, primitive);) {
- 		return black
+ 	if (!this->intersection(ray, in, primitive)) {
+ 		return black;
 	}
  	BRDF brdf;
- 	in.object->getBRDF(in.postion, in.normal, brdf);
+ 	primitive.getBRDF(in.position, in.normal, brdf);
  	Vector3D color();
- 	for (int i = 0; i < the_scene.numlights; i += 1) {
-		Vector3D lray = the_scene.lightiter[i].generateLightRay(in.position, in.normal);
+ 	for (int i = 0; i < this->scene.numlights; i += 1) {
+		Vector3D lray = this->scene.lightiter[i].generateLightRay(in.position, in.normal);
 		if (!this->intersection(lray, in.primitive)) {
 			Vector3D temp_color = material::shading(ray.dir in.position, in.normal, brdf, the_scene.lightiter[i])
 			color.add(temp_color);
@@ -30,7 +30,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 	}
 	// handle reflections soon
 	if (!brdf.kr.iszero()) {
-		Ray reflectRay = createReflectRay(in.local, ray);
+		Ray reflectRay = ray.createReflectRay(in.position, in.normal);
 		Color tempcolor = trace(reflectRay, depth + 1);
 		color.add(tempcolor.multiplytwo(brdf.kr));
 	}
