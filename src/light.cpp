@@ -41,6 +41,15 @@ PointLight::PointLight(double ix, double iy, double iz, double ir, double ig, do
 	b = ib;
 }
 
+DirectionalLight::DirectionalLight(double ix, double iy, double iz, double ir, double ig, double ib) {
+	x = ix;
+	y = iy;
+	z = iz;
+	r = ir;
+	g = ig;
+	b = ib;
+}
+
 Vector3D PointLight::getLightVector(Vector3D point) {
 	// l is the difference between the position of the light and the intersection point
 	Vector3D l = getVector().subtract(point).normalize();
@@ -58,7 +67,7 @@ Ray PointLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
 Vector3D DirectionalLight::getLightVector(Vector3D point) {
 	// l is simply the normalized vector in the direction of the light
 	// the point is not taken into account
-	Vector3D l = getVector().normalize();// .scale(-1); I think this was an error
+	Vector3D l = getVector().normalize().scale(-1); // not an error, needs to point in the opposite direction
 }
 
 Ray DirectionalLight::generateLightRay(Vector3D inposition, Vector3D innormal) {

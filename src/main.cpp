@@ -6,7 +6,7 @@ int main()
 	// A wonderful scene
 	Scene main_scene = Scene();
 	// With an awesome sphere
-	Sphere ball = Sphere(Vector3D(0.0f, 0.0f, 0.0f), 0.3f);
+	Sphere ball = Sphere(Vector3D(0.0f, 0.0f, -2.0f), 1.0f);
 	Sphere* ball_ptr = &ball;
 	
 	Vector3D ka = Vector3D(0.0, 0.0, 0.0);

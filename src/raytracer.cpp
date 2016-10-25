@@ -15,16 +15,19 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 	Vector3D black = Vector3D(0,0,0);
 	Vector3D white = Vector3D(1, 1, 1);
 	// if we have bounced more than threshold, color is black
+	std::cout<<'t'<<std::endl;
 	if (depth > threshhold) {
  		return black;
  	}
  	Intersection in;
  	Object** primitive;
  	// if we do not hit any objects in the scene, color is black
+ 	std::cout<<'I'<<std::endl;
  	if (!interceptsObject(ray, in, primitive)) {
  		return black;
 	}
-	return white;
+ 	std::cout<<'a'<<std::endl;
+
 	// otherwise we now have the correct intersection and object
  	// brdf will be obtained from Material's shading method
  	//==== I think these lines can be deleted ====
@@ -43,13 +46,13 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 			color = color.add(shadingFromLight);
 		}
 	}
-	// // handle reflections soon
-	// if (!brdf.kr.iszero()) {
-	// 	Ray reflectRay = ray.createReflectRay(in.position, in.normal);
-	// 	Vector3D tempcolor = trace(reflectRay, depth + 1);
-	// 	color = color.add(tempcolor.multiply(brdf.kr));
-	// }
-	// return color;
+	// handle reflections soon
+	if (!(*primitive)->material.calculateBRDF().kr.iszero()) {
+		Ray reflectRay = ray.createReflectRay(in.position, in.normal);
+		Vector3D tempcolor = trace(reflectRay, depth + 1);
+		color = color.add(tempcolor.multiply((*primitive)->material.calculateBRDF().kr));
+	}
+	return color;
 }
 
 bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) {
@@ -58,13 +61,18 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 	float best_time = -1;
 	// for every object in the scene, check if ray intersects it
 	for (int i = 0; i < numobjects; i++) {
+		std::cout<<'b'<<std::endl;
 		if (objectiter[i]->intersect(ray, temp)) {
 			if (best_time == -1) {
+				std::cout<<-1<<std::endl;
 				// this is our first hit, best time by default
 				best_time = temp.time; // intersection stores hittime!
+				std::cout<<best_time<<std::endl;
 				in = temp; // capture the intersection
 				*primitive = objectiter[i]; // capture the object
+				std::cout<<2<<std::endl;
 			} else if (temp.time < best_time && temp.time >= 0) {
+				std::cout<<1<<std::endl;
 				// new closest intersection
 				best_time = temp.time; 
 				in = temp; // capture interception

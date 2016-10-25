@@ -37,6 +37,7 @@ public:
 class DirectionalLight:public Light {
 public:
 	DirectionalLight();
+	DirectionalLight(double ix, double iy, double iz, double ir, double ig, double ib);
 	Vector3D getLightVector(Vector3D point);
 	Ray generateLightRay(Vector3D inposition, Vector3D innormal);
 };
