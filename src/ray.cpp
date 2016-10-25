@@ -1,5 +1,6 @@
 #include "ray.h"
 #include "camera.h"
+#include "vector3d.h"
 
 Ray::Ray() {}
 Ray::Ray(Vector3D position, Vector3D direction, float tMinimum, float tMaximum) {
@@ -29,4 +30,7 @@ bool Ray::valid_t(float time) {
 	} else {
 		return true;
 	}
+}
+Ray Ray::createReflectRay(Vector3D inposition, Vector3D innormal) {
+
 }

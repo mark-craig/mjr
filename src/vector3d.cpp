@@ -34,6 +34,7 @@ void Vector3D::modify(Vector3D copy) {
 	this->y = copy.y;
 	this->z = copy.z;
 }
+
 Vector3D Vector3D::multiplytwo(Vector3D other) {
 	// multiply two vectors together
 	float tempx = this->x * other.x;

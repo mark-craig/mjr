@@ -8,7 +8,9 @@ public:
 	// constructor
 	Scene();
 	// methods
-	void render();
+	void render(int x, int y);
+	void addLight(Light light);
+	void addObject(Object object);
 	//items
 	vector<Light> lightiter;
 	int numlights;
