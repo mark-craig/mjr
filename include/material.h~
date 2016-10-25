@@ -12,5 +12,5 @@ class Material {
 	Material(BRDF ibrdf);
 };
 
-Vector3D shading(Vector3D view, Vector3D position, Vector3D normal,
+Vector3D shading(Vector3D view, Vector3d position, Vector3D normal,
 		 BRDF this_brdf, Light light);

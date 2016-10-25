@@ -10,4 +10,4 @@ public:
 	Vector3D kr;
 	BRDF();
 	BRDF(Vector3D ika, Vector3D ikd, Vector3D iks, Vector3D ikr); 
-};
+}

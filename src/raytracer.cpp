@@ -1,31 +1,31 @@
 #include "ray.h"
 #include "raytracer.h"
-#include "shader.h"
 #include "scene.h"
+#include "material.h"
 
 RayTracer::RayTracer(Scene the_scene) {
 	// how many times it can bounce
-	threshold = 1;
+	threshhold = 1;
 	scene = the_scene;
 }
-Color black = Vector3d(0,0,0)
+Vector3D black = Vector3D(0,0,0);
 
-Color RayTracer::trace(Ray ray, int depth) {
-	if (depth > threshold) {
+Vector3D RayTracer::trace(Ray ray, int depth) {
+	if (depth > threshhold) {
  		return black;
  	}
- 	float thit = 0; Intersection in;
-= 	if (!this->intersection(ray, in);) {
+ 	float thit = 0; Intersection in; Object primitive;
+ 	if (!this->intersection(ray, in, primitive);) {
  		return black
 	}
  	BRDF brdf;
  	in.object->getBRDF(in.postion, in.normal, brdf);
  	Vector3D color();
  	for (int i = 0; i < the_scene.numlights; i += 1) {
-		Vector3D lray(); Vector3D lcolor();
-		the_scene.lightiter[i].generateLightRay(in.local, &lray, &lcolor);
+		Vector3D lray = the_scene.lightiter[i].generateLightRay(in.position, in.normal);
 		if (!this->intersection(lray, in.primitive)) {
-			color.add(shading(in.local, brdf, lray, lcolor);
+			Vector3D temp_color = material::shading(ray.dir in.position, in.normal, brdf, the_scene.lightiter[i])
+			color.add(temp_color);
 		}
 	}
 	// handle reflections soon
