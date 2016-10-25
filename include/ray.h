@@ -10,7 +10,7 @@ public:
 
 	//constructor
 	Ray();
-	Ray(Vector3D position, Vector3D direction, float tMinimum=0.0f, float tMaximum=FLT_MAX);
+	Ray(Vector3D position, Vector3D direction, float tMinimum=FLT_MIN, float tMaximum=FLT_MAX);
 
 	//methods
 	Ray createReflectRay(Vector3D inposition, Vector3D innormal);

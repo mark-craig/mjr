@@ -1,6 +1,4 @@
 #include "objects.h"
-#include <cmath>
-#include <iostream>
 
 Object::Object() {}
 
@@ -43,15 +41,16 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 
 	// slightly different quadratic function, pg. 77 Shirley & Marschner
 	float A = d.dot(d);
-	float B = -e.subtract(c).dot(d);
+	float B = 2*d.dot(e.subtract(c));
 	float C = e.subtract(c).dot(e.subtract(c)) - pow(radius, 2);
-	float discriminant = pow(B, 2) - A*C;
+
+	float discriminant = pow(B, 2) - 4*A*C;
 	if (discriminant < 0) {
 		cout << "discriminant < 0" << endl;
 		return false;
 	} else {
-		float t1 = (-B + sqrt(discriminant))/pow(A, 2);
-		float t2 = (-B - sqrt(discriminant))/pow(A, 2);
+		float t1 = (-B + sqrt(discriminant))/2*A;
+		float t2 = (-B - sqrt(discriminant))/2*A;
 		float t;
 		if (!ray.valid_t(t1) and !ray.valid_t(t2)) {
 			// roots exist, but outside of bounds
@@ -70,7 +69,8 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		}
 		
 		intersection.position = ray.t(t);
-		intersection.normal = intersection.position.subtract(center);
+		// bottom of pg. 77
+		intersection.normal = intersection.position.subtract(center).scale(1/radius);
 		intersection.time = t;
 		// cout << "returning true" << endl;
 		return true;

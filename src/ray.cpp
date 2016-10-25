@@ -23,9 +23,9 @@ Vector3D Ray::t(float time) {
 }
 
 bool Ray::valid_t(float time) {
-	if (time < t_min) {
+	if (time <= t_min) {
 		return false;
-	} else if (time > t_max) {
+	} else if (time >= t_max) {
 		return false;
 	} else {
 		return true;
