@@ -56,7 +56,7 @@ Vector3D Material::shade(Vector3D view, Vector3D position, Vector3D normal, Ligh
 
 Vector3D Material::shadeAmbient(Vector3D ka, Vector3D lightColor) {
 	// calculate the ambient lighting
-	return ka.multiply(lightColor).scale(255);
+	return ka.multiply(lightColor);
 }
 
 Vector3D Material::shadeDiffuse(Vector3D kd, Vector3D lightColor, Vector3D lightVector, Vector3D normal) {
@@ -65,7 +65,7 @@ Vector3D Material::shadeDiffuse(Vector3D kd, Vector3D lightColor, Vector3D light
 	// std::cout<<'n'<<normal.x<<','<<normal.y<<','<<normal.z<<std::endl;
 	// std::cout<<'l'<<lightVector.x<<','<<lightVector.y<<','<<lightVector.z<<std::endl;
 	float diffuseFactor = max(0.0f, normal.dot(lightVector));
-	Vector3D temp = kd.multiply(lightColor).scale(diffuseFactor).scale(255);
+	Vector3D temp = kd.multiply(lightColor).scale(diffuseFactor);
 	return temp;
 }
 
