@@ -77,6 +77,6 @@ Ray DirectionalLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
 	// generate light ray for a directional light
 	float time_to = FLT_MAX;
 	Vector3D direction = getVector().normalize().scale(-1);
-	return Ray(inposition, direction, FLT_MIN, time_to);
+	return Ray(inposition, direction, FLT_EPSILON, time_to);
 
 }
