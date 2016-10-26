@@ -49,9 +49,6 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 		Vector3D tempcolor = trace(reflectRay, depth + 1);
 		color = color.add(tempcolor.multiply((*primitive)->material.calculateBRDF().kr));
 	}
-	if (color.z > 0) {
-		std::cout<<'f'<<color.x<<','<<color.y<<','<<color.z<<std::endl;
-	}
 	return color;
 	// return white;
 }

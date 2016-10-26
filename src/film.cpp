@@ -12,7 +12,7 @@ Film::Film(int ix, int iy) {
 }
 
 void Film::commit(Sample sample, Vector3D color) {
-	vector<float> cv = color.scale(255).value();
+	vector<float> cv = color.toRGB().value();
 	// vector<float> cv = {255, 255, 255};
 
 	float* c = &cv[0]; // this assumes the spec for vector3d

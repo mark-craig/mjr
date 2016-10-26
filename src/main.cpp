@@ -7,11 +7,14 @@ int main()
 	Scene main_scene = Scene();
 	// With an awesome sphere
 	Ray hits = Ray(Vector3D(0,0,5), Vector3D(0,0,-1));
-	Sphere target = Sphere(Vector3D(0,0,0), 1);
-	target.addMaterial(Vector3D(0, .5, 0), Vector3D(0, 0, 1), Vector3D(1, 0, 0), 10.0f);
+	Sphere target = Sphere(Vector3D(0,0,0), .3);
+	target.addMaterial(Vector3D(.1, .1, .1), Vector3D(1, 0, 0), Vector3D(.3, .3, .3), 10.0f);
 	// std::cout<<'f'<<target.material.brdf.ka.x<<','<<target.material.brdf.ka.y<<','<<target.material.brdf.ka.z<<std::endl;
-	DirectionalLight light = DirectionalLight(0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 1.0f);
-	DirectionalLight* light_ptr = &light;
+	PointLight light = PointLight(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+	PointLight* light_ptr = &light;
+	// PointLight light = PointLight(1.0f, 0.0f, -1.0f, 1.0f, 1.0f, 1.0f);
+	// PointLight* light_ptr = &light;
+
 	std::vector<Object*> v = {&target};	
 	std::vector<Light*> u = {&light};	
 	// A camera for the screen
