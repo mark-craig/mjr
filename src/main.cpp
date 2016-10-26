@@ -6,7 +6,7 @@ int main()
 	// A wonderful scene
 	Scene main_scene = Scene();
 	// With an awesome sphere
-	Sphere ball = Sphere(Vector3D(0.0f, 0.0f, -2.0f), 1.0f);
+	Sphere ball = Sphere(Vector3D(0.0f, 0.0f, 5.0f), 0.3f);
 	Sphere* ball_ptr = &ball;
 	
 	Vector3D ka = Vector3D(0.0, 0.0, 0.0);
@@ -17,7 +17,7 @@ int main()
 	// A camera for the screen
 	Camera camera = Camera();
 	// And a light right here
-	PointLight light = PointLight(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+	PointLight light = PointLight(0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 1.0f);
 	PointLight* light_ptr = &light;
 
 	main_scene.addLight(light_ptr);
@@ -26,6 +26,6 @@ int main()
 
 
 	// hold onto your butts
-	main_scene.render(700, 500);
+	main_scene.render(500, 500);
 
 }

@@ -36,7 +36,7 @@ Sphere::Sphere(Vector3D icenter, float iradius) {
 	radius = iradius;
 }
 bool Sphere::intersect(Ray ray, Intersection &intersection) {
-	Vector3D d = ray.dir;
+	Vector3D d = ray.dir.normalize();
 	Vector3D c = center;
 	Vector3D e = ray.pos;
 
@@ -47,7 +47,6 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 
 	float discriminant = pow(B, 2) - 4*A*C;
 	if (discriminant < 0) {
-		cout << "discriminant < 0" << endl;
 		return false;
 	} else {
 		float t1 = (-B + sqrt(discriminant))/2*A;
@@ -73,7 +72,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		// bottom of pg. 77
 		intersection.normal = intersection.position.subtract(center).scale(1/radius);
 		intersection.time = t;
-		// cout << "returning true" << endl;
+		// cout << "ray hit at" << intersection.position.x << intersection.position.y << intersection.position.z << endl;
 		return true;
 	}
 }

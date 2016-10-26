@@ -22,11 +22,12 @@ void Scene::render(int x, int y) {
 		// ++i;
 		// bar2->Progressed(i);
 		Ray ray = Ray();
-		camera.generateRay(sample, ray, -1, -1);
+		camera.generateRay(sample, ray, x, y);
 		Vector3D color = raytracer.trace(ray, 0);
 		film.commit(sample, color);
 	}
 	film.display_film();
+	film.write_film();
 };
 
 void Scene::addLight(Light* light) {

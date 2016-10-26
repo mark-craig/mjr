@@ -13,7 +13,7 @@ RayTracer::RayTracer(int inumlights, int inumobjects,
 Vector3D RayTracer::trace(Ray ray, int depth) {
 	// trace the given ray depth# of bounces. Output the resulting color perceived..
 	Vector3D black = Vector3D(0,0,0);
-	Vector3D white = Vector3D(1, 1, 1);
+	Vector3D white = Vector3D(255, 255, 255);
 	// if we have bounced more than threshold, color is black
 	if (depth > threshhold) {
  		return black;
@@ -50,7 +50,8 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 		color = color.add(tempcolor.multiply((*primitive)->material.calculateBRDF().kr));
 	}
 	std::cout<<'f'<<color.x<<','<<color.y<<','<<color.z<<std::endl;
-	return color;
+	return color.scale(255);
+	// return white;
 }
 
 bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) {

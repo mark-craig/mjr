@@ -13,6 +13,8 @@ Film::Film(int ix, int iy) {
 
 void Film::commit(Sample sample, Vector3D color) {
 	vector<float> cv = color.value();
+	// vector<float> cv = {255, 255, 255};
+
 	float* c = &cv[0]; // this assumes the spec for vector3d
 	image.draw_point(sample.x, sample.y, c);
 } 
