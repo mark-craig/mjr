@@ -53,7 +53,7 @@ DirectionalLight::DirectionalLight(double ix, double iy, double iz, double ir, d
 
 Vector3D PointLight::getLightVector(Vector3D point) {
 	// l is the difference between the position of the light and the intersection point
-	Vector3D l = getVector().subtract(point).normalize().scale(-1); // light vector points to light
+	Vector3D l = point.subtract(getVector()).normalize(); // light vector points to light
 	return l;
 }
 
@@ -78,5 +78,4 @@ Ray DirectionalLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
 	float time_to = FLT_MAX;
 	Vector3D direction = getVector().normalize().scale(-1);
 	return Ray(inposition, direction, FLT_EPSILON, time_to);
-
 }
