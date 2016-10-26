@@ -14,6 +14,8 @@ Vector3D::Vector3D(float inputx, float inputy, float inputz) {
 	z = inputz;
 }
 
+
+
 void Vector3D::zero_out() {
 	// zero's out the 3D vector
 	this->x = 0.0;
@@ -48,6 +50,19 @@ bool Vector3D::iszero() {
 		return true;
 	}
 	return false;
+}
+
+Vector3D Vector3D::toRGB() {
+	float newx;
+	float newy;
+	float newz;
+	newx = x*255.0f;
+	newy = y*255.0f;
+	newz = z*255.0f;
+	newx = max(0.0f, min(255.0f, newx));
+	newy = max(0.0f, min(255.0f, newy));
+	newz = max(0.0f, min(255.0f, newz));
+	return Vector3D(newx, newy, newz);
 }
 
 float Vector3D::magnitude(){

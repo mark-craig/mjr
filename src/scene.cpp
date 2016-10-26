@@ -14,13 +14,13 @@ void Scene::render(int x, int y) {
 	Film film = Film(x, y);
 	Sample sample = Sample();
 	RayTracer raytracer = RayTracer(numlights, numobjects, lightiter, objectiter);
-	// int n = x * y + 2000;
-	// ProgressBar *bar2 = new ProgressBar(n, "Rendering: ");
-	// bar2->SetFrequencyUpdate(10);
-	// int i = 0;
+	int n = x * y + 2000;
+	ProgressBar *bar2 = new ProgressBar(n, "Rendering: ");
+	bar2->SetFrequencyUpdate(10);
+	int i = 0;
 	while(sampler.getSample(sample)) {
-		// ++i;
-		// bar2->Progressed(i);
+		++i;
+		bar2->Progressed(i);
 		Ray ray = Ray();
 		camera.generateRay(sample, ray, x, y);
 		Vector3D color = raytracer.trace(ray, 0);

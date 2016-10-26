@@ -49,8 +49,7 @@ Vector3D Material::shade(Vector3D view, Vector3D position, Vector3D normal, Ligh
 	result = result.add(shadeDiffuse(this_brdf.kd, I, l, normal));
 	// std::cout<<'r'<<result.x<<','<<result.y<<','<<result.z<<std::endl;
 	//mix in specular
-	Vector3D view_vector = view;
-	result = result.add(shadeSpecular(this_brdf.ks, view_vector, I, l, normal));
+	result = result.add(shadeSpecular(this_brdf.ks, view, I, l, normal));
 	return result;
 }
 

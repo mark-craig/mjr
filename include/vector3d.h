@@ -21,6 +21,7 @@ public:
 	void modify(float inputx, float inputy, float inputz);
 	void modify(Vector3D copy);
 	Vector3D multiply(Vector3D other);
+	Vector3D toRGB();
 	bool iszero();
 	float magnitude();
 	Vector3D normalize();
