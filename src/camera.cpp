@@ -98,8 +98,13 @@ void Camera::generateRay(Sample sample, Ray &ray, int nx, int ny) {
 	float pixel_u = l + (-2.0*l)*(sample.x + 0.5)/nx;
 	float pixel_v = b + (-2.0*b)*(sample.y + 0.5)/ny;
 
-	Vector3D origin = e.add(u.scale(pixel_u).add(v.scale(pixel_v)));
-	Vector3D neg_w = w.scale(-1.0f);
-	ray = Ray(origin, neg_w);
+	// perspective method
+	Vector3D d = e.subtract(getCenterOfImagePlane());
+	Vector3D direction = w.scale(-1 * d.magnitude()).add(u.scale(pixel_u)).add(v.scale(pixel_v));
+	ray = Ray(e, direction);
+	//// orthographic method
+	// Vector3D origin = e.add(u.scale(pixel_u).add(v.scale(pixel_v)));
+	// Vector3D neg_w = w.scale(-1);
+	// ray = Ray(origin, neg_w);
 }
 

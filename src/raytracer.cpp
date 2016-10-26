@@ -42,6 +42,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 			Vector3D shadingFromLight = (*primitive)->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
 		}
+		color = color.add((*primitive)->material.shadeAmbient(this_brdf.ka, I)));
 	}
 	// handle reflections soon
 	if (!(*primitive)->material.calculateBRDF().kr.iszero()) {

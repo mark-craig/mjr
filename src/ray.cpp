@@ -2,6 +2,7 @@
 #include "camera.h"
 #include "vector3d.h"
 #include <iostream>
+#include <cfloat>
 
 Ray::Ray() {}
 Ray::Ray(Vector3D position, Vector3D direction, float tMinimum, float tMaximum) {
@@ -34,5 +35,6 @@ bool Ray::valid_t(float time) {
 	}
 }
 Ray Ray::createReflectRay(Vector3D inposition, Vector3D innormal) {
-
+		Vector3D r = this->dir.scale(-1).add(innormal.scale(2*(this->dir.dot(innormal)))).normalize();
+		return Ray(inposition, r, 0.1f, FLT_MAX);
 }

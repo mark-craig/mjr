@@ -44,19 +44,21 @@ Vector3D Material::shade(Vector3D view, Vector3D position, Vector3D normal, Ligh
 	Vector3D l = light->getLightVector(position);
 	Vector3D I = light->getColor();
 	// mix in ambient
-	result = result.add(shadeAmbient(this_brdf.ka, I));
+	// result = result.add(shadeAmbient(this_brdf.ka, I));
 	//mix in diffuse
 	result = result.add(shadeDiffuse(this_brdf.kd, I, l, normal));
 	// std::cout<<'r'<<result.x<<','<<result.y<<','<<result.z<<std::endl;
 	//mix in specular
-	result = result.add(shadeSpecular(this_brdf.ks, view, I, l, normal));
+	Vector3D viewVector = view.scale(-1);
+	result = result.add(shadeSpecular(this_brdf.ks, viewVector, I, l, normal));
 	return result;
 }
 
-
+// clean up this method later!
 Vector3D Material::shadeAmbient(Vector3D ka, Vector3D lightColor) {
 	// calculate the ambient lighting
-	return ka.multiply(lightColor);
+	Vector3D ka_ = calculateBRDF().ka;
+	return ka_.multiply(lightColor);
 }
 
 Vector3D Material::shadeDiffuse(Vector3D kd, Vector3D lightColor, Vector3D lightVector, Vector3D normal) {
@@ -73,10 +75,7 @@ Vector3D Material::shadeSpecular(Vector3D ks, Vector3D viewVector, Vector3D ligh
 	// compute half vector for specular component
 	Vector3D h = viewVector.add(lightVector).normalize();
 	Vector3D r = lightVector.scale(-1).add(normal.scale(2*(lightVector.dot(normal)))).normalize();
-	cout<<viewVector.x<<','<<viewVector.y<<','<<viewVector.z<<endl;
 	// cout<<r.x<<','<<r.y<<','<<r.z<<endl;
-	float ergh = r.dot(viewVector);
-	cout<<ergh<<endl;
 	// calculate specular
 	float specularComponent;
 	if (anisotropic) {
