@@ -3,6 +3,7 @@
 #include "light.h"
 #include "material.h"
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -72,6 +73,10 @@ Vector3D Material::shadeSpecular(Vector3D ks, Vector3D viewVector, Vector3D ligh
 	// compute half vector for specular component
 	Vector3D h = viewVector.add(lightVector).normalize();
 	Vector3D r = lightVector.scale(-1).add(normal.scale(2*(lightVector.dot(normal)))).normalize();
+	cout<<viewVector.x<<','<<viewVector.y<<','<<viewVector.z<<endl;
+	// cout<<r.x<<','<<r.y<<','<<r.z<<endl;
+	float ergh = r.dot(viewVector);
+	cout<<ergh<<endl;
 	// calculate specular
 	float specularComponent;
 	if (anisotropic) {

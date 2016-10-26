@@ -9,6 +9,10 @@ int main()
 	Ray hits = Ray(Vector3D(0,0,5), Vector3D(0,0,-1));
 	Sphere target = Sphere(Vector3D(0,0,0), .3);
 	target.addMaterial(Vector3D(.1, .1, .1), Vector3D(1, 0, 0), Vector3D(.3, .3, .3), 10.0f);
+// =======
+// 	Sphere target = Sphere(Vector3D(0,0,0), 1);
+// 	target.addMaterial(Vector3D(0, 0, 0), Vector3D(0, 0, 0), Vector3D(1, 0, 0), 10.0f);
+// >>>>>>> 67bd428bff229e39590ac708c64f47776837e200
 	// std::cout<<'f'<<target.material.brdf.ka.x<<','<<target.material.brdf.ka.y<<','<<target.material.brdf.ka.z<<std::endl;
 	PointLight light = PointLight(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 	PointLight* light_ptr = &light;
