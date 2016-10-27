@@ -8,10 +8,8 @@ int main(int argc, char* argv[])
 		// A wonderful scene
 		Scene main_scene = Scene();
 		// With an awesome sphere
-		Sphere target2 = Sphere(Vector3D(0,-2,4), 1.0f);
-		Sphere target = Sphere(Vector3D(0,2,5), 2.0f);
-		target.addMaterial(Vector3D(.1, .1, .1), Vector3D(1, 0, 0), Vector3D(.3, .3, .3), 10.0f);
-		target2.addMaterial(Vector3D(.1, .1, .1), Vector3D(1, 0, 0), Vector3D(.3, .3, .3), 10.0f);
+		Triangle target = Triangle(Vector3D(0,1,4), Vector3D(1, 0, 4), Vector3D(1, 1, 4));
+		target.addMaterial(Vector3D(.1, .1, .1), Vector3D(0, 0, 1), Vector3D(.3, .3, .3), 10.0f);
 	// =======
 	// 	Sphere target = Sphere(Vector3D(0,0,0), 1);
 	// 	target.addMaterial(Vector3D(0, 0, 0), Vector3D(0, 0, 0), Vector3D(1, 0, 0), 10.0f);
@@ -31,7 +29,6 @@ int main(int argc, char* argv[])
 		main_scene.addLight(light_ptr);
 		main_scene.addCamera(camera);
 		main_scene.addObject(&target);
-		main_scene.addObject(&target2);
 
 
 		// hold onto your butts

@@ -32,9 +32,9 @@ public:
 	float radius;
 };
 
-class PolygonMesh:public Object {
+class Mesh:public Object {
 	// polygon mesh is a
-	PolygonMesh();
+	Mesh();
 	bool intersect(Ray ray, Intersection &intersection);
 };
 
@@ -43,8 +43,14 @@ class CombinedObject:public Object {
 	bool intersect(Ray ray, Intersection &intersection);
 };
 
-class Polygon:public Object {
-	Polygon();
+class Triangle:public Object {
+public:
+	Triangle();
+	Triangle(Vector3D a, Vector3D b, Vector3D c);
 	bool intersect(Ray ray, Intersection &intersection);
 
+	// members
+	Vector3D v1;
+	Vector3D v2;
+	Vector3D v3;
 };
