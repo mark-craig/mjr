@@ -123,7 +123,9 @@ bool Triangle::intersect(Ray ray, Intersection &intersection) {
  		return false;
  	}
  	intersection.position = ray.t(t);
- 	intersection.normal = v1.subtract(v2).cross(v1.subtract(v3)).scale(-1);
+ 	 	// Justin's solution for making sure normal is pointed in right direction
+ 	Vector3D n = v1.subtract(v2).cross(v1.subtract(v3));
+ 	intersection.normal = n.scale(-n.dot(ray.dir)/abs(n.dot(ray.dir)));
  	return true;
 
 }
