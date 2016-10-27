@@ -47,7 +47,21 @@ Scene Parser::parseInputFile(string filepath) {
 							stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]),
 							stof(parsed_line[10]), stof(parsed_line[11]), stof(parsed_line[12]),
 							stof(parsed_line[13]), stof(parsed_line[14]), stof(parsed_line[15]));
-		} 
+		}
+		// parse sphere line
+		else if (strcmp(parsed_line[0].c_str(), "sph") == 0) {
+			// verify num args
+			if (parsed_line.size() == 5) {
+				string string = "Sphere line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			camera = Camera(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
+							stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
+							stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]),
+							stof(parsed_line[10]), stof(parsed_line[11]), stof(parsed_line[12]),
+							stof(parsed_line[13]), stof(parsed_line[14]), stof(parsed_line[15]));
+		}
 	}
 
 	return scene;
