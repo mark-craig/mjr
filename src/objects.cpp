@@ -77,6 +77,50 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 	}
 }
 
-bool Polygon::intersect(Ray ray, Intersection &intersection) {
-	return false;
+Triangle::Triangle(Vector3D a, Vector3D b, Vector3D c) {
+	v1 = a;
+	v2 = b;
+	v3 = c;
+}
+
+bool Triangle::intersect(Ray ray, Intersection &intersection) {
+	// calculates whether ray interesects triangle, captures result in intersection
+	// Shirley & Marschner pg. 79
+	// this could potentially be faster using decomposition of Cramer's rule
+	// but I believe in the powers of Eigen
+	
+	Matrix3f A;
+	A << v1.x - v2.x, v1.x - v3.x, ray.dir.x,
+		 v1.y - v2.y, v1.y - v3.y, ray.dir.y,
+ 		 v1.z - v2.z, v1.z - v3.z, ray.dir.z;
+ 	float detA = A.determinant();
+ 	Matrix3f tMatrix;
+ 	tMatrix << v1.x - v2.x, v1.x - v3.x, v1.x - ray.pos.x,
+		 	   v1.y - v2.y, v1.y - v3.y, v1.y - ray.pos.y,
+ 		 	   v1.z - v2.z, v1.z - v3.z, v1.z - ray.pos.z;
+ 	float t = tMatrix.determinant()/detA;
+ 	if (t < ray.t_min || t > ray.t_max) {
+ 		return false;
+ 	}
+ 	Matrix3f gammaMatrix;
+ 	gammaMatrix << v1.x - v2.x, v1.x - ray.pos.x, ray.dir.x,
+ 				   v1.y - v2.y, v1.y - ray.pos.y, ray.dir.y,
+ 				   v1.z - v2.z, v2.z - ray.pos.z, ray.dir.z;
+ 	float gamma = gammaMatrix.determinant()/detA;
+ 	if (gamma < 0 || gamma > 1) {
+ 		return false;
+ 	}
+ 	Matrix3f betaMatrix;
+ 	betaMatrix << v1.x - ray.pos.x, v1.x - v3.x, ray.dir.x,
+ 				  v1.y - ray.pos.y, v1.y - v3.y, ray.dir.y,
+ 				  v1.z - ray.pos.z, v1.z - v3.z, ray.dir.z;
+ 	float beta = betaMatrix.determinant()/detA;
+ 	if (beta < 0 || beta > 1 - gamma) {
+ 		return false;
+ 	}
+ 	intersection.position = ray.t(t);
+ 	 	// Justin's solution for making sure normal is pointed in right direction
+ 	Vector3D n = v1.subtract(v2).cross(v1.subtract(v3));
+ 	intersection.normal = n.scale(-n.dot(ray.dir)/abs(n.dot(ray.dir)));
+ 	return true;
 }
