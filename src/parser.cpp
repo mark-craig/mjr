@@ -56,11 +56,8 @@ Scene Parser::parseInputFile(string filepath) {
 				cout<<string<<endl;
 				throw;
 			}
-			camera = Camera(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
-							stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
-							stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]),
-							stof(parsed_line[10]), stof(parsed_line[11]), stof(parsed_line[12]),
-							stof(parsed_line[13]), stof(parsed_line[14]), stof(parsed_line[15]));
+			Vector3D position = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			Sphere object = Sphere(position, stof(parsed_line[4]));
 		}
 	}
 
