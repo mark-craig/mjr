@@ -37,10 +37,16 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	// for every light in the scene, generate its ray to the point
  	for (int i = 0; i < numlights; i++) {
 		Ray lray = lightiter[i]->generateLightRay(in.position, in.normal); // generate a light ray for the point
-		if (!intersection(lray)) { // if nothing intersects the light ray before it hits the point
+		if (!intersection(lray, *primitive)) { // if nothing intersects the light ray before it hits the point
 			// get the color that is added _from_the_single_light_ray_
 			Vector3D shadingFromLight = (*primitive)->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
+			if (lightiter[i]->falloff == 1) {
+				color = color.scale(1.0f / lightiter[i]->getVector().subtract(in.position).magnitude());
+			} else if (lightiter[i]->falloff == 2) {
+				float fall = lightiter[i]->getVector().subtract(in.position).magnitude() * lightiter[i]->getVector().subtract(in.position).magnitude();
+				color = color.scale(1.0f / fall);
+			}
 		}
 		color = color.add((*primitive)->material.shadeAmbient(Vector3D(), lightiter[i]->getColor()));
 	}
@@ -82,12 +88,12 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 		return false;
 	}
 }
-bool RayTracer::intersection(Ray ray) {
+bool RayTracer::intersection(Ray ray, Object *object) {
 	// find whether there is any intersection at all. Capture nothing.
 	Intersection temp;
 	for (int i = 0; i < numobjects; i ++) {
 		// for every object, check if there is an intersection
-		if (objectiter[i]->intersect(ray, temp)) {
+		if (objectiter[i]->intersect(ray, temp) && !((Object *) objectiter[i] == object)) {
 			// if there was an intersection
 			if (ray.valid_t(temp.time)) { // and it is within our time limits
 			// we found an intersection

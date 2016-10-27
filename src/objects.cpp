@@ -1,4 +1,8 @@
 #include "objects.h"
+#include <Eigen/Dense>
+
+using namespace std;
+using namespace Eigen;
 
 Object::Object() {}
 
@@ -19,7 +23,9 @@ void Object::addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float
 	newmat.spv = spv;
 	material = newmat;
 }
-
+void Object::addMaterial(Material the_material) {
+	material = the_material;
+}
 
 void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();

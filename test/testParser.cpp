@@ -21,5 +21,4 @@ TEST(ParserTest, ParsesArguments) {
 	EXPECT_EQ(arguments[2], "cy");
 	EXPECT_EQ(arguments[3], "cz");
 	EXPECT_EQ(arguments[4], "r");
-
 }

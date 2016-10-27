@@ -11,6 +11,7 @@ Light::Light() {
 	r = 0.0;
 	g = 0.0;
 	b = 0.0;
+	falloff = 0;
 }
 
 Vector3D Light::getVector() {
@@ -33,13 +34,14 @@ Vector3D Light::getColor() {
 
 // }
 
-PointLight::PointLight(double ix, double iy, double iz, double ir, double ig, double ib) {
+PointLight::PointLight(double ix, double iy, double iz, double ir, double ig, double ib, int ifalloff) {
 	x = ix;
 	y = iy;
 	z = iz;
 	r = ir;
 	g = ig;
 	b = ib;
+	falloff = ifalloff;
 }
 
 DirectionalLight::DirectionalLight(double ix, double iy, double iz, double ir, double ig, double ib) {
@@ -49,6 +51,7 @@ DirectionalLight::DirectionalLight(double ix, double iy, double iz, double ir, d
 	r = ir;
 	g = ig;
 	b = ib;
+	falloff = 0;
 }
 
 Vector3D PointLight::getLightVector(Vector3D point) {
@@ -62,7 +65,7 @@ Ray PointLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
 	Vector3D direction_temp = getVector().subtract(inposition).normalize().scale(-1);
 	float time_to = direction_temp.magnitude();
 	Vector3D direction = direction_temp.normalize();
-	return Ray(inposition, direction, 0.1f, time_to);
+	return Ray(inposition, direction, 0.0f, time_to);
 
 }
 
@@ -77,5 +80,5 @@ Ray DirectionalLight::generateLightRay(Vector3D inposition, Vector3D innormal) {
 	// generate light ray for a directional light
 	float time_to = FLT_MAX;
 	Vector3D direction = getVector().normalize().scale(-1);
-	return Ray(inposition, direction, 0.1f, time_to);
+	return Ray(inposition, direction, 0.0f, time_to);
 }

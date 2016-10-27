@@ -14,6 +14,7 @@ public:
 	double r;
 	double g;
 	double b;
+	int falloff;
 
 	//constructors
 	Light();
@@ -28,7 +29,7 @@ public:
 class PointLight:public Light {
 public:
 	PointLight();
-	PointLight(double ix, double iy, double iz, double ir, double ig, double ib);
+	PointLight(double ix, double iy, double iz, double ir, double ig, double ib, int ifalloff);
 	Vector3D getLightVector(Vector3D point);
 	Ray generateLightRay(Vector3D inposition, Vector3D innormal);
 

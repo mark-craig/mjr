@@ -14,6 +14,7 @@ public:
 	Object();
  	virtual bool intersect(Ray ray, Intersection &intersection) =0;
  	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float sp);
+ 	void addMaterial(Material the_material);
  	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float spv);
 	void getBRDF(Vector3D position, Vector3D normal, BRDF &brdf);
 	// members

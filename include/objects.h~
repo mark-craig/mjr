@@ -5,14 +5,17 @@
 #include "ray.h"
 
 class Object {
+	// ====== THIS IS AN ABSTRACT CLASS AND SHOULD NOT BE USED DIRECTLY =======
 	// a shape is anything that can be rendered in the 3D space, whether it is defined
 	// by a mathematical function or a collection of primitives
 public:
 	// methods
 	// =0 at the end makes it a pure virtual function
-	Object() =0;
-	virtual bool intersect(Ray ray, Intersection &intersection) =0;
-	void getBRDF(Vector3D position, Vector3D normal);
+	Object();
+ 	virtual bool intersect(Ray ray, Intersection &intersection) =0;
+ 	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float sp);
+ 	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float spv);
+	void getBRDF(Vector3D position, Vector3D normal, BRDF &brdf);
 	// members
 	Vector3D center;
 	Material material;
@@ -29,9 +32,9 @@ public:
 	float radius;
 };
 
-class PolygonMesh:public Object {
+class Mesh:public Object {
 	// polygon mesh is a
-	PolygonMesh();
+	Mesh();
 	bool intersect(Ray ray, Intersection &intersection);
 };
 
@@ -40,8 +43,14 @@ class CombinedObject:public Object {
 	bool intersect(Ray ray, Intersection &intersection);
 };
 
-class Polygon:public Object {
-	Polygon();
+class Triangle:public Object {
+public:
+	Triangle();
+	Triangle(Vector3D a, Vector3D b, Vector3D c);
 	bool intersect(Ray ray, Intersection &intersection);
 
+	// members
+	Vector3D v1;
+	Vector3D v2;
+	Vector3D v3;
 };
