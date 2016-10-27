@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 		// A wonderful scene
 		Scene main_scene = Scene();
 		// With an awesome sphere
-		Triangle target = Triangle(Vector3D(0,1,4), Vector3D(1, 0, 4), Vector3D(1, 1, 4));
+		Triangle target = Triangle(Vector3D(0,1,4), Vector3D(1, 0, 3), Vector3D(1, 1, 4));
 		target.addMaterial(Vector3D(.1, .1, .1), Vector3D(0, 0, 1), Vector3D(.3, .3, .3), 10.0f);
 	// =======
 	// 	Sphere target = Sphere(Vector3D(0,0,0), 1);
