@@ -12,6 +12,7 @@
 #include "progress_bar.hpp"
 #include <vector>
 #include <string>
+#include "film.h"
 
 
 class Scene {
@@ -29,5 +30,6 @@ public:
 	vector<Object*> objectiter;
 	int numobjects;
 	Camera camera;
+	Film film;
 	
 };

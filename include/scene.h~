@@ -29,5 +29,6 @@ public:
 	vector<Object*> objectiter;
 	int numobjects;
 	Camera camera;
+	Film film;
 	
 };

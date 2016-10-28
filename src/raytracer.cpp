@@ -22,6 +22,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	Object* temp_primitive;
  	Object ** primitive = &temp_primitive;
  	// if we do not hit any objects in the scene, color is black
+ 	//currently segfaults here
  	if (!interceptsObject(ray, in, primitive)) {
  		return black;
 	}
@@ -66,6 +67,8 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 	float best_time = -1;
 	// for every object in the scene, check if ray intersects it
 	for (int i = 0; i < numobjects; i++) {
+		std::cout<<numobjects<<std::endl;
+		std::cout<<objectiter.size()<<std::endl;
 		if (objectiter[i]->intersect(ray, temp)) {
 			if (best_time == -1) {
 				// this is our first hit, best time by default

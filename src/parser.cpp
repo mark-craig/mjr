@@ -49,6 +49,7 @@ Scene Parser::parseInputFile(string filepath) {
 							stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]),
 							stof(parsed_line[10]), stof(parsed_line[11]), stof(parsed_line[12]),
 							stof(parsed_line[13]), stof(parsed_line[14]), stof(parsed_line[15]));
+			std::cout<<'c'<<std::endl;
 		}
 		// parse sphere line
 		else if (strcmp(parsed_line[0].c_str(), "sph") == 0) {
@@ -64,6 +65,7 @@ Scene Parser::parseInputFile(string filepath) {
 			object.addMaterial(material);
 			object.addTransformation(transformation);
 			scene.addObject(&object);
+			std::cout<<'s'<<std::endl;
 		}
 		// parse triangle line
 		else if (strcmp(parsed_line[0].c_str(), "tri") == 0) {

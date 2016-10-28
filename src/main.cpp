@@ -1,5 +1,7 @@
 #include "scene.h"
 #include "parser.h"
+#include <iostream>
+#include <string>
 
 int main(int argc, char* argv[])
 {
@@ -38,14 +40,19 @@ int main(int argc, char* argv[])
 		main_scene.render(700, 700, true, string("object.png"));
 	}
 	else {
+		std::cout<<argv[1]<<std::endl;
 		Parser parse = Parser();
+		std::cout<<1<<std::endl;
 		Scene main_scene = parse.parseInputFile(string(argv[1]));
+		std::cout<<2<<std::endl;
 		if (argc == 3 && strcmp("--write", argv[2])) {
 			main_scene.render(700, 700, true, string("object.png"));
 		} else if (argc == 4 && strcmp("--write", argv[2])) {
 			main_scene.render(700, 700, true, string(argv[3]));
 		} else {
-			main_scene.render(700, 700, false, string("not written") );
+			std::cout<<3<<std::endl;
+			main_scene.render(700, 700, false, string("not written"));
+			std::cout<<4<<std::endl;
 		}
 	}
 }
