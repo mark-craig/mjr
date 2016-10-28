@@ -1,4 +1,5 @@
 #include "film.h"
+#include "string.h"
 
 using namespace cimg_library;
 
@@ -23,6 +24,6 @@ void Film::display_film(const char* window_name) {
 	CImgDisplay disp(image, window_name, 0); // 0 sets normalization off
 	image.display(disp, true); // 'true' leaves the window open
 }
-void Film::write_film() {
-	image.save("output.png");
+void Film::write_film(string the_string) {
+	image.save(the_string.c_str());
 }

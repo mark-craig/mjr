@@ -11,7 +11,7 @@
 #include "raytracer.h"
 #include "progress_bar.hpp"
 #include <vector>
-
+#include <string>
 
 
 class Scene {
@@ -19,7 +19,7 @@ public:
 	// constructor
 	Scene();
 	// methods
-	void render(int x, int y);
+	void render(int x, int y, bool write, string name);
 	void addLight(Light* light);
 	void addObject(Object* object);
 	void addCamera(Camera sceneCamera);

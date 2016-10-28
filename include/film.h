@@ -4,6 +4,7 @@
 #include "vector3d.h"
 #include <string>
 #include "CImg.h"
+
 class Film {
 public:
 	// fields
@@ -18,7 +19,7 @@ public:
 	// methods
 	void commit(Sample sample, Vector3D color);
 	void display_film(const char* window_name = "mjr");
-	void write_film();
+	void write_film(string the_string);
 	// writeColor
 
 };

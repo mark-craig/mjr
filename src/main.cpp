@@ -34,6 +34,17 @@ int main(int argc, char* argv[])
 
 
 		// hold onto your butts
-		main_scene.render(700, 1400);
+		main_scene.render(700, 700, true, string("object.png"));
+	}
+	else {
+		Parser parse = Parser();
+		Scene main_scene = parse.parseInputFile(string(argv[1]));
+		if (argc == 3 && strcmp("--write", argv[2])) {
+			main_scene.render(700, 700, true, string("object.png"));
+		} else if (argc == 4 && strcmp("--write", argv[2])) {
+			main_scene.render(700, 700, true, string(argv[3]));
+		} else {
+			main_scene.render(700, 700, false, string("not written") );
+		}
 	}
 }

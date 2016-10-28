@@ -1,4 +1,5 @@
 #include "scene.h"
+#include <string>
 
 using namespace cimg_library;
 
@@ -9,7 +10,7 @@ Scene::Scene() {
 	numobjects = 0;
 }
 
-void Scene::render(int x, int y) {
+void Scene::render(int x, int y, bool write, string name) {
 	Sampler sampler = Sampler(x, y);
 	Film film = Film(x, y);
 	Sample sample = Sample();
@@ -27,7 +28,7 @@ void Scene::render(int x, int y) {
 		film.commit(sample, color);
 	}
 	film.display_film();
-	film.write_film();
+	film.write_film(name);
 };
 
 void Scene::addLight(Light* light) {
