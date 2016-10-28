@@ -105,62 +105,62 @@ Scene Parser::parseInputFile(string filepath) {
 				scene->addObject(object);
 			}
 		}
-		// // parse point light
-		// else if (strcmp(parsed_line[0].c_str(), "ltp") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 7 or parsed_line.size() == 8) {
-		// 		string string = "Point light line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	int falloff = 0;
-		// 	if (parsed_line.size() != 8) falloff  = stoi(parsed_line[7]);
-		// 	// add falloff later.
-		// 	PointLight light = PointLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
-		// 								  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
-		// 								  falloff);
-		// 	scene.addLight(&light);
-		// }
-		// // parse directional light
-		// else if (strcmp(parsed_line[0].c_str(), "ltd") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 7) {
-		// 		string string = "Directional light line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	DirectionalLight light = DirectionalLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
-		// 								  			  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
-		// 	scene.addLight(&light);
-		// }
-		// // parse ambient light
-		// else if (strcmp(parsed_line[0].c_str(), "lta") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 4) {
-		// 		string string = "Ambient light line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	// this might not work
-		// 	DirectionalLight light = DirectionalLight(0.0f, 0.0f, 0.0f, stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-		// 	scene.addLight(&light);
-		// }
-		// // parse ambient light
-		// else if (strcmp(parsed_line[0].c_str(), "mat") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 14) {
-		// 		string string = "Material line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	Vector3D ka = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-		// 	Vector3D kd = Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
-		// 	Vector3D ks = Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
-		// 	Vector3D kr = Vector3D(stof(parsed_line[11]), stof(parsed_line[12]), stof(parsed_line[13]));
-		// 	float sp = stof(parsed_line[10]);
-		// 	BRDF brdf = BRDF(ka, kd, ks, kr);
-		// 	material = Material(brdf, sp);
-		// }
+		// parse point light
+		else if (strcmp(parsed_line[0].c_str(), "ltp") == 0) {
+			// verify num args
+			if (parsed_line.size() != 7 or parsed_line.size() == 8) {
+				string string = "Point light line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			int falloff = 0;
+			if (parsed_line.size() != 8) falloff  = stoi(parsed_line[7]);
+			// add falloff later.
+			PointLight * light = new PointLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
+										  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
+										  falloff);
+			scene->addLight(light);
+		}
+		// parse directional light
+		else if (strcmp(parsed_line[0].c_str(), "ltd") == 0) {
+			// verify num args
+			if (parsed_line.size() != 7) {
+				string string = "Directional light line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			DirectionalLight * light = new DirectionalLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
+										  			  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
+			scene->addLight(light);
+		}
+		// parse ambient light
+		else if (strcmp(parsed_line[0].c_str(), "lta") == 0) {
+			// verify num args
+			if (parsed_line.size() != 4) {
+				string string = "Ambient light line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			// this might not work
+			DirectionalLight * light = new DirectionalLight(0.0f, 0.0f, 0.0f, stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			scene->addLight(light);
+		}
+		// parse material
+		else if (strcmp(parsed_line[0].c_str(), "mat") == 0) {
+			// verify num args
+			if (parsed_line.size() != 14) {
+				string string = "Material line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Vector3D *ka = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			Vector3D *kd = new Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
+			Vector3D *ks = new Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
+			Vector3D *kr = new Vector3D(stof(parsed_line[11]), stof(parsed_line[12]), stof(parsed_line[13]));
+			float sp = stof(parsed_line[10]);
+			BRDF * brdf = new BRDF(*ka, *kd, *ks, *kr);
+			material = new Material(*brdf, sp);
+		}
 		// // handle transformations
 		// else if (strcmp(parsed_line[0].c_str(), "xfr") == 0) {
 		// 	// verify num args

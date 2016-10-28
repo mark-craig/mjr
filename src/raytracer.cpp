@@ -4,7 +4,7 @@
 RayTracer::RayTracer(int inumlights, int inumobjects,
 					 vector<Light*> ilightiter, vector<Object*> iobjectiter) {
 	// how many times it can bounce
-	threshhold = 1;
+	threshhold = 5;
 	// the stuff from the scene
 	numlights = inumlights;  numobjects = inumobjects;
 	lightiter = ilightiter; objectiter = iobjectiter;
@@ -26,7 +26,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	if (!interceptsObject(ray, in, primitive)) {
  		return black;
 	}
-	return Vector3D(1,1,1);
+	// return Vector3D(1,1,1);
 	// otherwise we now have the correct intersection and object
  	// brdf will be obtained from Material's shading method
  	//==== I think these lines can be deleted ====
@@ -57,6 +57,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 		Ray reflectRay = ray.createReflectRay(in.position, in.normal);
 		Vector3D tempcolor = trace(reflectRay, depth + 1);
 		color = color.add(tempcolor.multiply((*primitive)->material.calculateBRDF().kr));
+		cout<<"PENOS"<<endl;
 	}
 	return color;
 	// return white;
@@ -86,12 +87,12 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 	}
 	if (best_time != -1.0f) {
 		// we found an interesection
-	// 	if (* primitive ==objectiter[numobjects - 1]) {
+		if (* primitive ==objectiter[numobjects - 1]) {
 	// // std::cout<<*primitive<<std::endl;
 	// // std::cout<<objectiter[numobjects - 1]<<std::endl;
 	// // std::cout<<best_time<<std::endl;
 	// // std::cout<<temp.time<<std::endl;
-	// }
+	}
 		return true;
 	} else {
 		// we did not
