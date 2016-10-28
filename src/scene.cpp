@@ -13,10 +13,6 @@ Scene::Scene() {
 }
 
 void Scene::render(int x, int y, bool write, string name) {
-	// for (int i = 0; i < numobjects; i += 1) {
-	// 	std::cout<<objectiter[i]<<std::endl;
-	// 	std::cout<<((Sphere *) objectiter[i])->center.x<<std::endl;
-	// }
 	Sampler sampler = Sampler(x, y);
 	film = Film(x, y);
 	Sample sample = Sample();

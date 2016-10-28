@@ -37,7 +37,9 @@ Scene Parser::parseInputFile(string filepath) {
 	while(getline(f, line)) { // while we have not reached the end of the file
 		vector<string> parsed_line = parseline(line);
 		// # will be comment lines
-		if (strcmp(parsed_line[0].c_str(), "#") == 0) {
+		if (parsed_line.size() == 0) {
+			continue;
+		} else if (strcmp(parsed_line[0].c_str(), "#") == 0) {
 		// pass
 		}
 		// parse camera line
@@ -228,7 +230,6 @@ vector<Object*> Parser::parseObjFile(string filepath) {
 	////Initialze an identity transformation
 	// Transformation transformation = Transformation();
 	string line; // each line we read out from file
-	// cout << line << endl;
 	int index = 1;
 	while(!f.eof()) { // while we have not reached the end of the file
 		getline(f, line);
