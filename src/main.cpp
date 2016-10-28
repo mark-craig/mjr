@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		target.addMaterial(Vector3D(0, .1, .1), Vector3D(.3, 0, 1), Vector3D(.3, .3, .3), 10.0f);
 		// target.addMaterial(Vector3D(0, 0, 0), Vector3D(0, 0, 0), Vector3D(1, 0, 0), 10.0f);
 		// std::cout<<'f'<<target.material.brdf.ka.x<<','<<target.material.brdf.ka.y<<','<<target.material.brdf.ka.z<<std::endl;
-		PointLight light = PointLight(0.0f, 10.0f, 0.0f, 20.0f, 1.0f, 1.0f, 1);
+		PointLight light = PointLight(0.0f, 5.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0);
 		PointLight* light_ptr = &light;
 		// PointLight light = PointLight(1.0f, 0.0f, -1.0f, 1.0f, 1.0f, 1.0f);
 		// PointLight* light_ptr = &light;
@@ -34,6 +34,6 @@ int main(int argc, char* argv[])
 
 
 		// hold onto your butts
-		main_scene.render(500, 500);
+		main_scene.render(700, 1400);
 	}
 }
