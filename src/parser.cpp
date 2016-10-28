@@ -161,46 +161,46 @@ Scene Parser::parseInputFile(string filepath) {
 			BRDF * brdf = new BRDF(*ka, *kd, *ks, *kr);
 			material = new Material(*brdf, sp);
 		}
-		// // handle transformations
-		// else if (strcmp(parsed_line[0].c_str(), "xfr") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 4) {
-		// 		string string = "Rotation line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	Rotate transform = Rotate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-		// 	transformation = Transformation(transformation, transform);
-		// }
-		// else if (strcmp(parsed_line[0].c_str(), "xfs") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 4) {
-		// 		string string = "Scale line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	Scale transform = Scale(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-		// 	transformation = Transformation(transformation, transform);
-		// }
-		// else if (strcmp(parsed_line[0].c_str(), "xft") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 4) {
-		// 		string string = "Translate line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	Translate transform = Translate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-		// 	transformation = Transformation(transformation, transform);
-		// }
-		// else if (strcmp(parsed_line[0].c_str(), "xfz") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 1) {
-		// 		string string = "Identity line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	transformation = Transformation();
-		// }
+		// handle transformations
+		else if (strcmp(parsed_line[0].c_str(), "xfr") == 0) {
+			// verify num args
+			if (parsed_line.size() != 4) {
+				string string = "Rotation line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Rotate * transform = new Rotate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			transformation = new Transformation(* transformation, * transform);
+		}
+		else if (strcmp(parsed_line[0].c_str(), "xfs") == 0) {
+			// verify num args
+			if (parsed_line.size() != 4) {
+				string string = "Scale line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Scale * transform = new Scale(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			transformation = new Transformation( *transformation, * transform);
+		}
+		else if (strcmp(parsed_line[0].c_str(), "xft") == 0) {
+			// verify num args
+			if (parsed_line.size() != 4) {
+				string string = "Translate line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Translate * transform = new Translate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			transformation = new Transformation(* transformation, * transform);
+		}
+		else if (strcmp(parsed_line[0].c_str(), "xfz") == 0) {
+			// verify num args
+			if (parsed_line.size() != 1) {
+				string string = "Identity line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			transformation = new Transformation();
+		}
 	}
 		std::cout<<"argv[2]"<<std::endl;
 

@@ -35,6 +35,7 @@ bool Ray::valid_t(float time) {
 	}
 }
 Ray Ray::createReflectRay(Vector3D inposition, Vector3D innormal) {
-		Vector3D r = this->dir.scale(-1).add(innormal.scale(2*(this->dir.dot(innormal)))).normalize();
+		Vector3D r = this->dir.add(innormal.scale(-2*(this->dir.dot(innormal)))).normalize();
+		// cout<<r.x<<','<<r.y<<','<<r.z<<endl;
 		return Ray(inposition, r, 0.1f, FLT_MAX);
 }

@@ -57,7 +57,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 		Ray reflectRay = ray.createReflectRay(in.position, in.normal);
 		Vector3D tempcolor = trace(reflectRay, depth + 1);
 		color = color.add(tempcolor.multiply((*primitive)->material.calculateBRDF().kr));
-		cout<<"PENOS"<<endl;
+
 	}
 	return color;
 	// return white;
