@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 		Parser parse = Parser();
 		std::cout<<argv[1]<<std::endl;
 		Scene main_scene = parse.parseInputFile(string(argv[1]));
+		std::cout<<"fss"<<std::endl;
 		if (argc == 3 && strcmp("--write", argv[2])) {
 			main_scene.render(700, 700, true, string("object.png"));
 		} else if (argc == 4 && strcmp("--write", argv[2])) {

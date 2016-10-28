@@ -22,7 +22,7 @@ Scene Parser::parseInputFile(string filepath) {
 		cout<<string<<endl;
 		throw;
 	}
-	Scene scene = Scene();
+	Scene * scene = new Scene();
 
 	Camera * camera = new Camera();
 
@@ -34,8 +34,7 @@ Scene Parser::parseInputFile(string filepath) {
 	string line; // each line we read out from file
 	// cout << line << endl;
 
-	while(!f.eof()) { // while we have not reached the end of the file
-		getline(f, line);
+	while(getline(f, line)) { // while we have not reached the end of the file
 		vector<string> parsed_line = parseline(line);
 		// # will be comment lines
 		if (strcmp(parsed_line[0].c_str(), "#") == 0) {
@@ -56,23 +55,23 @@ Scene Parser::parseInputFile(string filepath) {
 							stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]),
 							stof(parsed_line[10]), stof(parsed_line[11]), stof(parsed_line[12]),
 							stof(parsed_line[13]), stof(parsed_line[14]), stof(parsed_line[15]));
-			scene.addCamera(* camera);
+			scene->addCamera(* camera);
 		}
 		// parse sphere line
-		// else if (strcmp(parsed_line[0].c_str(), "sph") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 5) {
-		// 		string string = "Sphere line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	Vector3D * position = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-		// 	Sphere * object = new Sphere(* position, stof(parsed_line[4]));
-		// 	//for transformations
-		// 	object->addMaterial(* material);
-		// 	object->addTransformation(* transformation);
-		// 	scene.addObject(object);
-		// }
+		else if (strcmp(parsed_line[0].c_str(), "sph") == 0) {
+			// verify num args
+			if (parsed_line.size() != 5) {
+				string string = "Sphere line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Vector3D * position = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			Sphere * object = new Sphere(* position, stof(parsed_line[4]));
+			//for transformations
+			object->addMaterial(* material);
+			object->addTransformation(* transformation);
+			scene->addObject(object);
+		}
 		// // parse triangle line
 		// else if (strcmp(parsed_line[0].c_str(), "tri") == 0) {
 		// 	// verify num args
@@ -205,7 +204,7 @@ Scene Parser::parseInputFile(string filepath) {
 	}
 		std::cout<<"argv[2]"<<std::endl;
 
-	return scene;
+	return * scene;
 }
 
 vector<string> Parser::parseline(string line) {
