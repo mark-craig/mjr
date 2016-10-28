@@ -89,22 +89,22 @@ Scene Parser::parseInputFile(string filepath) {
 			object->addTransformation(* transformation);
 			scene->addObject(object);
 		}
-		// // parse obj file
-		// else if (strcmp(parsed_line[0].c_str(), "obj") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 2) {
-		// 		string string = "No obj file with that name";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	vector<Object*> objects = parseObjFile(parsed_line[1]);
-		// 	int sizeofobjects = objects.size();
-		// 	for (int i = 0; i < sizeofobjects; i += 1) {
-		// 		Object * object = objects[i];
-		// 		object->addMaterial(* material);
-		// 		scene.addObject(object);
-		// 	}
-		// }
+		// parse obj file
+		else if (strcmp(parsed_line[0].c_str(), "obj") == 0) {
+			// verify num args
+			if (parsed_line.size() != 2) {
+				string string = "No obj file with that name";
+				cout<<string<<endl;
+				throw;
+			}
+			vector<Object*> objects = parseObjFile(parsed_line[1]);
+			int sizeofobjects = objects.size();
+			for (int i = 0; i < sizeofobjects; i += 1) {
+				Object * object = objects[i];
+				object->addMaterial(* material);
+				scene->addObject(object);
+			}
+		}
 		// // parse point light
 		// else if (strcmp(parsed_line[0].c_str(), "ltp") == 0) {
 		// 	// verify num args

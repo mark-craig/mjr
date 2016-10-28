@@ -18,8 +18,6 @@ void Scene::render(int x, int y, bool write, string name) {
 	// 	std::cout<<((Sphere *) objectiter[i])->center.x<<std::endl;
 	// }
 	Sampler sampler = Sampler(x, y);
-	Vector3D kek = camera.getPosition();
-	cout<<kek.x<<','<<kek.y<<','<<kek.z<<endl;
 	film = Film(x, y);
 	Sample sample = Sample();
 	RayTracer raytracer = RayTracer(numlights, numobjects, lightiter, objectiter);

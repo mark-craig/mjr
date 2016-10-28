@@ -65,7 +65,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) {
 	// find the closest intersection if there is one, capture the Interception and the Object
 	Intersection temp;
-	float best_time = -1;
+	float best_time = -1.0f;
 	// for every object in the scene, check if ray intersects it
 	for (int i = 0; i < numobjects; i++) {
 		// std::cout<<numobjects<<std::endl;
@@ -84,13 +84,13 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 			}
 		}
 	}
-	if (best_time != -1) {
+	if (best_time != -1.0f) {
 		// we found an interesection
 	// 	if (* primitive ==objectiter[numobjects - 1]) {
-	// std::cout<<*primitive<<std::endl;
-	// std::cout<<objectiter[numobjects - 1]<<std::endl;
-	// std::cout<<best_time<<std::endl;
-	// std::cout<<temp.time<<std::endl;
+	// // std::cout<<*primitive<<std::endl;
+	// // std::cout<<objectiter[numobjects - 1]<<std::endl;
+	// // std::cout<<best_time<<std::endl;
+	// // std::cout<<temp.time<<std::endl;
 	// }
 		return true;
 	} else {
