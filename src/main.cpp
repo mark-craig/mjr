@@ -9,7 +9,11 @@ int main(int argc, char* argv[])
 		Scene main_scene = Scene();
 		// With an awesome sphere
 		// Triangle target = Triangle(Vector3D(0,1,4), Vector3D(1, 0, 5), Vector3D(1, 1, 4));
-		Sphere target = Sphere(Vector3D(0,0,5), 3);
+		vector<Vector3D> verts = {Vector3D(-1, -1, -1), 
+						  		Vector3D(-1, 1, -1),
+						  		Vector3D(1, 1, 1),
+						  		Vector3D(1, -1, 1)};
+		Polygon target = Polygon(verts);
 		target.addMaterial(Vector3D(0, .1, .1), Vector3D(.3, 0, 1), Vector3D(.3, .3, .3), 10.0f);
 		// target.addMaterial(Vector3D(0, 0, 0), Vector3D(0, 0, 0), Vector3D(1, 0, 0), 10.0f);
 		// std::cout<<'f'<<target.material.brdf.ka.x<<','<<target.material.brdf.ka.y<<','<<target.material.brdf.ka.z<<std::endl;

@@ -1,4 +1,5 @@
 #include "vector3d.h"
+#include <stdexcept>
 using namespace std;
 
 // constructors
@@ -127,4 +128,16 @@ float Vector3D::getTheta(Vector3D v2) {
 vector<float> Vector3D::value() {
 	vector<float> result = {x, y, z};
 	return result;
+}
+
+float Vector3D::index(int i) {
+	if (i == 0) {
+		return x;
+	} else if (i == 1) {
+		return y;
+	} else  if (i == 2) {
+		return z; 
+	} else {
+		throw invalid_argument("index out of range");
+	}
 }
