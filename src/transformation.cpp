@@ -1,6 +1,7 @@
 #include "transformation.h"
 #include <cmath>
 using namespace std;
+#define PI 3.14159265
 
 Transformation::Transformation() {
 	m << 1, 0, 0, 0,
@@ -40,17 +41,17 @@ Translate::Translate(float x, float y, float z) {
 Rotate::Rotate(float alpha, float beta, float gamma) {
 	Matrix4f t;
 	t <<   1, 0, 0, 0,
-		   0, cos(alpha), -sin(alpha), 0,
-		   0, sin(alpha), cos(alpha), 0,
+		   0, cos(alpha * PI / 180), -sin(alpha * PI / 180), 0,
+		   0, sin(alpha * PI / 180), cos(alpha * PI / 180), 0,
 		   0, 0, 0, 1;
 	Matrix4f s;
-	s << cos(beta), 0, sin(beta), 0,
+	s << cos(beta * PI / 180), 0, sin(beta * PI / 180), 0,
 		 0, 1, 0, 0,
-		 -sin(beta), 0, cos(beta), 0,
+		 -sin(beta * PI / 180), 0, cos(beta * PI / 180), 0,
 		 0, 0, 0, 1;
 	Matrix4f r;
-	r << cos(beta), -sin(beta), 0, 0,
-		 sin(beta), cos(beta), 0, 0,
+	r << cos(beta * PI / 180), -sin(beta * PI / 180), 0, 0,
+		 sin(beta * PI / 180), cos(beta * PI / 180), 0, 0,
 		  0, 0, 1, 0,
 		  0, 0, 0, 1;
 	

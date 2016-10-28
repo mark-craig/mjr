@@ -1,6 +1,7 @@
 #include "objects.h"
 #include "transformation.h"
 #include <cfloat>
+#include <iostream>
 
 using namespace std;
 using namespace Eigen;
@@ -45,7 +46,6 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 	// convert ray to object space
 	Vector4f dir = Vector4f(ray.dir.x, ray.dir.y, ray.dir.z, 0.0f);
 	Vector4f pos = Vector4f(ray.pos.x, ray.pos.y, ray.pos.z, 1.0f);
-	// cout<<'p'<<dir<<','<<pos<<endl;
 	// cout<<center.x<<','<<center.y<<','<<center.z<<endl;
 	Vector4f new_dir;
 	Vector4f new_pos;
@@ -54,8 +54,12 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		new_pos = pos;
 	}
 	else {
+		// cout<<"pre"<<transform.m<<endl;
+		// cout<<"inv"<<transform.m.inverse()<<endl;
 		new_dir = transform.m.inverse()*dir;
 		new_pos = transform.m.inverse()*pos;
+		// cout<<'p'<<dir<<','<<pos<<endl;
+		// cout<<"kek"<<new_dir<<','<<new_pos<<endl;
 	}
 	Vector3D d = Vector3D(new_dir[0], new_dir[1], new_dir[2]);
 	Vector3D c = center;
@@ -89,7 +93,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 			t = min(t1, t2);
 		}
 		
-		intersection.position = ray.t(t);
+		intersection.position = e.add(d.scale(t));
 		// bottom of pg. 77
 		intersection.normal = intersection.position.subtract(center);
 		// back to world space
@@ -103,9 +107,9 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		}
 		else {
 			new_inpos = transform.m*inpos;
-			new_innom = transform.m*innom;
+			new_innom = transform.m.inverse().transpose()*innom;
 		}
-		intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
+		// intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
 		intersection.normal = Vector3D(new_innom[0], new_innom[1], new_innom[2]).normalize();
 		intersection.time = t;
 		// cout << "ray hit at" << intersection.position.x << intersection.position.y << intersection.position.z << endl;
