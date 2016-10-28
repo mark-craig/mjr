@@ -72,23 +72,23 @@ Scene Parser::parseInputFile(string filepath) {
 			object->addTransformation(* transformation);
 			scene->addObject(object);
 		}
-		// // parse triangle line
-		// else if (strcmp(parsed_line[0].c_str(), "tri") == 0) {
-		// 	// verify num args
-		// 	if (parsed_line.size() != 10) {
-		// 		string string = "Triangle line improper args";
-		// 		cout<<string<<endl;
-		// 		throw;
-		// 	}
-		// 	Vector3D * a = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-		// 	Vector3D * b = new Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
-		// 	Vector3D * c = new Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
-		// 	Triangle * object = new Triangle(*a, *b, *c);
-		// 	//for transformations
-		// 	object->addMaterial(* material);
-		// 	object->addTransformation(* transformation);
-		// 	scene.addObject(object);
-		// }
+		// parse triangle line
+		else if (strcmp(parsed_line[0].c_str(), "tri") == 0) {
+			// verify num args
+			if (parsed_line.size() != 10) {
+				string string = "Triangle line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Vector3D * a = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			Vector3D * b = new Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
+			Vector3D * c = new Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
+			Triangle * object = new Triangle(*a, *b, *c);
+			//for transformations
+			object->addMaterial(* material);
+			object->addTransformation(* transformation);
+			scene->addObject(object);
+		}
 		// // parse obj file
 		// else if (strcmp(parsed_line[0].c_str(), "obj") == 0) {
 		// 	// verify num args

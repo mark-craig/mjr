@@ -20,6 +20,6 @@ public:
 	vector<Light*> lightiter; 
 	vector<Object*> objectiter;
 	Vector3D trace(Ray ray, int depth);
-	bool interceptsObject(Ray ray, Intersection &in, Object** primitive);
+	bool interceptsObject(Ray ray, Intersection & in, Object** primitive);
 	bool intersection(Ray ray, Object *object);
 };

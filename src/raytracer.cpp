@@ -86,6 +86,12 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 	}
 	if (best_time != -1) {
 		// we found an interesection
+	// 	if (* primitive ==objectiter[numobjects - 1]) {
+	// std::cout<<*primitive<<std::endl;
+	// std::cout<<objectiter[numobjects - 1]<<std::endl;
+	// std::cout<<best_time<<std::endl;
+	// std::cout<<temp.time<<std::endl;
+	// }
 		return true;
 	} else {
 		// we did not
