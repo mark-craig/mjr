@@ -40,14 +40,13 @@ int main(int argc, char* argv[])
 		main_scene.render(700, 700, true, string("object.png"));
 	}
 	else {
-		std::cout<<argv[1]<<std::endl;
+		cout<<argc<<','<<argv[argc - 1]<<endl;;
 		Parser parse = Parser();
-		std::cout<<argv[1]<<std::endl;
 		Scene main_scene = parse.parseInputFile(string(argv[1]));
-		std::cout<<"fss"<<std::endl;
 		if (argc == 3 && strcmp("--write", argv[2])) {
 			main_scene.render(700, 700, true, string("object.png"));
 		} else if (argc == 4 && strcmp("--write", argv[2])) {
+			cout<<argv[3]<<endl;;
 			main_scene.render(700, 700, true, string(argv[3]));
 		} else {
 			main_scene.render(700, 700, false, string("not written"));

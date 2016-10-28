@@ -33,8 +33,11 @@ void Scene::render(int x, int y, bool write, string name) {
 		Vector3D color = raytracer.trace(ray, 0);
 		film.commit(sample, color);
 	}
+	if (write) {
+		cout<<"Writing"<<","<<name<<endl;
+		film.write_film(name);
+	}
 	film.display_film();
-	film.write_film(name);
 };
 
 void Scene::addLight(Light* light) {

@@ -1,5 +1,6 @@
 #include "film.h"
 #include "string.h"
+#include <iostream>
 
 using namespace cimg_library;
 
@@ -26,4 +27,5 @@ void Film::display_film(const char* window_name) {
 }
 void Film::write_film(string the_string) {
 	image.save(the_string.c_str());
+	std::cout<<"Writing"<<std::endl;
 }

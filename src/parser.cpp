@@ -202,8 +202,6 @@ Scene Parser::parseInputFile(string filepath) {
 			transformation = new Transformation();
 		}
 	}
-		std::cout<<"argv[2]"<<std::endl;
-
 	return * scene;
 }
 
