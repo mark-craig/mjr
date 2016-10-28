@@ -23,12 +23,17 @@ Scene Parser::parseInputFile(string filepath) {
 		throw;
 	}
 	Scene scene = Scene();
-	Camera camera = Camera();
-	Material material = Material();
+
+	Camera * camera = new Camera();
+
+	Material * material = new Material();
+
 	////Initialze an identity transformation
-	Transformation transformation = Transformation();
+	Transformation * transformation = new Transformation();
+
 	string line; // each line we read out from file
 	// cout << line << endl;
+
 	while(!f.eof()) { // while we have not reached the end of the file
 		getline(f, line);
 		vector<string> parsed_line = parseline(line);
@@ -39,165 +44,166 @@ Scene Parser::parseInputFile(string filepath) {
 		// parse camera line
 		else if (strcmp(parsed_line[0].c_str(), "cam") == 0) {
 			// verify num args
+
 			if (parsed_line.size() != 16) {
 				string string = "Camera line improper args";
 				cout<<string<<endl;
 				throw;
 			}
-			camera = Camera(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
+			delete camera;
+			camera = new Camera(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
 							stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
 							stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]),
 							stof(parsed_line[10]), stof(parsed_line[11]), stof(parsed_line[12]),
 							stof(parsed_line[13]), stof(parsed_line[14]), stof(parsed_line[15]));
-			std::cout<<'c'<<std::endl;
+			scene.addCamera(* camera);
 		}
 		// parse sphere line
-		else if (strcmp(parsed_line[0].c_str(), "sph") == 0) {
-			// verify num args
-			if (parsed_line.size() != 5) {
-				string string = "Sphere line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Vector3D position = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			Sphere object = Sphere(position, stof(parsed_line[4]));
-			//for transformations
-			object.addMaterial(material);
-			object.addTransformation(transformation);
-			scene.addObject(&object);
-			std::cout<<'s'<<std::endl;
-		}
-		// parse triangle line
-		else if (strcmp(parsed_line[0].c_str(), "tri") == 0) {
-			// verify num args
-			if (parsed_line.size() != 10) {
-				string string = "Triangle line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Vector3D a = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			Vector3D b = Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
-			Vector3D c = Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
-			Triangle object = Triangle(a, b, c);
-			//for transformations
-			object.addMaterial(material);
-			object.addTransformation(transformation);
-			scene.addObject(&object);
-		}
-		// parse obj file
-		else if (strcmp(parsed_line[0].c_str(), "obj") == 0) {
-			// verify num args
-			if (parsed_line.size() != 2) {
-				string string = "No obj file with that name";
-				cout<<string<<endl;
-				throw;
-			}
-			vector<Object*> objects = parseObjFile(parsed_line[1]);
-			int sizeofobjects = objects.size();
-			for (int i = 0; i < sizeofobjects; i += 1) {
-				Object * object = objects[i];
-				object->addMaterial(material);
-				scene.addObject(object);
-			}
-
-		}
-		// parse point light
-		else if (strcmp(parsed_line[0].c_str(), "ltp") == 0) {
-			// verify num args
-			if (parsed_line.size() != 7 or parsed_line.size() == 8) {
-				string string = "Point light line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			int falloff = 0;
-			if (parsed_line.size() != 8) falloff  = stoi(parsed_line[7]);
-			// add falloff later.
-			PointLight light = PointLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
-										  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
-										  falloff);
-			scene.addLight(&light);
-		}
-		// parse directional light
-		else if (strcmp(parsed_line[0].c_str(), "ltd") == 0) {
-			// verify num args
-			if (parsed_line.size() != 7) {
-				string string = "Directional light line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			DirectionalLight light = DirectionalLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
-										  			  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
-			scene.addLight(&light);
-		}
-		// parse ambient light
-		else if (strcmp(parsed_line[0].c_str(), "lta") == 0) {
-			// verify num args
-			if (parsed_line.size() != 4) {
-				string string = "Ambient light line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			// this might not work
-			DirectionalLight light = DirectionalLight(0.0f, 0.0f, 0.0f, stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			scene.addLight(&light);
-		}
-		// parse ambient light
-		else if (strcmp(parsed_line[0].c_str(), "mat") == 0) {
-			// verify num args
-			if (parsed_line.size() != 14) {
-				string string = "Material line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Vector3D ka = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			Vector3D kd = Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
-			Vector3D ks = Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
-			Vector3D kr = Vector3D(stof(parsed_line[11]), stof(parsed_line[12]), stof(parsed_line[13]));
-			float sp = stof(parsed_line[10]);
-			BRDF brdf = BRDF(ka, kd, ks, kr);
-			material = Material(brdf, sp);
-		}
-		// handle transformations
-		else if (strcmp(parsed_line[0].c_str(), "xfr") == 0) {
-			// verify num args
-			if (parsed_line.size() != 4) {
-				string string = "Rotation line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Rotate transform = Rotate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			transformation = Transformation(transformation, transform);
-		}
-		else if (strcmp(parsed_line[0].c_str(), "xfs") == 0) {
-			// verify num args
-			if (parsed_line.size() != 4) {
-				string string = "Scale line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Scale transform = Scale(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			transformation = Transformation(transformation, transform);
-		}
-		else if (strcmp(parsed_line[0].c_str(), "xft") == 0) {
-			// verify num args
-			if (parsed_line.size() != 4) {
-				string string = "Translate line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Translate transform = Translate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			transformation = Transformation(transformation, transform);
-		}
-		else if (strcmp(parsed_line[0].c_str(), "xfz") == 0) {
-			// verify num args
-			if (parsed_line.size() != 1) {
-				string string = "Identity line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			transformation = Transformation();
-		}
+		// else if (strcmp(parsed_line[0].c_str(), "sph") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 5) {
+		// 		string string = "Sphere line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	Vector3D * position = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+		// 	Sphere * object = new Sphere(* position, stof(parsed_line[4]));
+		// 	//for transformations
+		// 	object->addMaterial(* material);
+		// 	object->addTransformation(* transformation);
+		// 	scene.addObject(object);
+		// }
+		// // parse triangle line
+		// else if (strcmp(parsed_line[0].c_str(), "tri") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 10) {
+		// 		string string = "Triangle line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	Vector3D * a = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+		// 	Vector3D * b = new Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
+		// 	Vector3D * c = new Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
+		// 	Triangle * object = new Triangle(*a, *b, *c);
+		// 	//for transformations
+		// 	object->addMaterial(* material);
+		// 	object->addTransformation(* transformation);
+		// 	scene.addObject(object);
+		// }
+		// // parse obj file
+		// else if (strcmp(parsed_line[0].c_str(), "obj") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 2) {
+		// 		string string = "No obj file with that name";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	vector<Object*> objects = parseObjFile(parsed_line[1]);
+		// 	int sizeofobjects = objects.size();
+		// 	for (int i = 0; i < sizeofobjects; i += 1) {
+		// 		Object * object = objects[i];
+		// 		object->addMaterial(* material);
+		// 		scene.addObject(object);
+		// 	}
+		// }
+		// // parse point light
+		// else if (strcmp(parsed_line[0].c_str(), "ltp") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 7 or parsed_line.size() == 8) {
+		// 		string string = "Point light line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	int falloff = 0;
+		// 	if (parsed_line.size() != 8) falloff  = stoi(parsed_line[7]);
+		// 	// add falloff later.
+		// 	PointLight light = PointLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
+		// 								  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
+		// 								  falloff);
+		// 	scene.addLight(&light);
+		// }
+		// // parse directional light
+		// else if (strcmp(parsed_line[0].c_str(), "ltd") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 7) {
+		// 		string string = "Directional light line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	DirectionalLight light = DirectionalLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
+		// 								  			  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
+		// 	scene.addLight(&light);
+		// }
+		// // parse ambient light
+		// else if (strcmp(parsed_line[0].c_str(), "lta") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 4) {
+		// 		string string = "Ambient light line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	// this might not work
+		// 	DirectionalLight light = DirectionalLight(0.0f, 0.0f, 0.0f, stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+		// 	scene.addLight(&light);
+		// }
+		// // parse ambient light
+		// else if (strcmp(parsed_line[0].c_str(), "mat") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 14) {
+		// 		string string = "Material line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	Vector3D ka = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+		// 	Vector3D kd = Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
+		// 	Vector3D ks = Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
+		// 	Vector3D kr = Vector3D(stof(parsed_line[11]), stof(parsed_line[12]), stof(parsed_line[13]));
+		// 	float sp = stof(parsed_line[10]);
+		// 	BRDF brdf = BRDF(ka, kd, ks, kr);
+		// 	material = Material(brdf, sp);
+		// }
+		// // handle transformations
+		// else if (strcmp(parsed_line[0].c_str(), "xfr") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 4) {
+		// 		string string = "Rotation line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	Rotate transform = Rotate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+		// 	transformation = Transformation(transformation, transform);
+		// }
+		// else if (strcmp(parsed_line[0].c_str(), "xfs") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 4) {
+		// 		string string = "Scale line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	Scale transform = Scale(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+		// 	transformation = Transformation(transformation, transform);
+		// }
+		// else if (strcmp(parsed_line[0].c_str(), "xft") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 4) {
+		// 		string string = "Translate line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	Translate transform = Translate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+		// 	transformation = Transformation(transformation, transform);
+		// }
+		// else if (strcmp(parsed_line[0].c_str(), "xfz") == 0) {
+		// 	// verify num args
+		// 	if (parsed_line.size() != 1) {
+		// 		string string = "Identity line improper args";
+		// 		cout<<string<<endl;
+		// 		throw;
+		// 	}
+		// 	transformation = Transformation();
+		// }
 	}
+		std::cout<<"argv[2]"<<std::endl;
 
 	return scene;
 }
@@ -212,7 +218,7 @@ vector<string> Parser::parseline(string line) {
 }
 
 vector<Object*> Parser::parseObjFile(string filepath) {
-	unordered_map<int, Vector3D> vertices;
+	unordered_map<int, Vector3D*> vertices;
 	vector<Object*> objects;
 	ifstream f;
 	f.open(filepath);
@@ -236,7 +242,7 @@ vector<Object*> Parser::parseObjFile(string filepath) {
 				cout<<string<<endl;
 				throw;
 			}
-			Vector3D position = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			Vector3D * position = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
 			vertices[index] = position;
 			index += 1;
 		}
@@ -246,8 +252,8 @@ vector<Object*> Parser::parseObjFile(string filepath) {
 				cout<<string<<endl;
 				throw;
 			}
-			Triangle triangle = Triangle(vertices[stoi(parsed_line[1])],vertices[stoi(parsed_line[2])],vertices[stoi(parsed_line[3])]);
-			objects.push_back(&triangle);
+			Triangle * triangle = new Triangle(* vertices[stoi(parsed_line[1])], * vertices[stoi(parsed_line[2])], * vertices[stoi(parsed_line[3])]);
+			objects.push_back(triangle);
 		}
 	}
 	return objects;

@@ -45,6 +45,8 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 	// convert ray to object space
 	Vector4f dir = Vector4f(ray.dir.x, ray.dir.y, ray.dir.z, 0.0f);
 	Vector4f pos = Vector4f(ray.pos.x, ray.pos.y, ray.pos.z, 1.0f);
+	// cout<<'p'<<dir<<','<<pos<<endl;
+	// cout<<center.x<<','<<center.y<<','<<center.z<<endl;
 	Vector4f new_dir;
 	Vector4f new_pos;
 	if (transform.isIdentity()) {

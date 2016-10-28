@@ -67,7 +67,7 @@ vector<Vector3D> Camera::getBasisWUV() {
 	Vector3D ipc = getCenterOfImagePlane();
 	// w is the vector pointing behind the camera.
 	// the rays travel out from the camera in -w
-	Vector3D w = ipc.subtract(e).normalize();
+	Vector3D w = ipc.subtract(e).normalize().scale(-1);
 	// u is calculated by taking the cross product of u and y
 	// http://web.cse.ohio-state.edu/~parent/classes/681/Lectures/08.RTgeometryHO.pdf
 	Vector3D up_vector = Vector3D(0, 1, 0);
@@ -87,6 +87,7 @@ Vector3D Camera::getViewVector() {
 void Camera::generateRay(Sample sample, Ray &ray, int nx, int ny) {
 	// Another assumption
 	// l = – r and b = – t, "Many systems assume"
+
 	Vector3D e = getPosition();
 	vector<Vector3D> basis = getBasisWUV();
 	Vector3D w = basis[0];
@@ -101,6 +102,8 @@ void Camera::generateRay(Sample sample, Ray &ray, int nx, int ny) {
 	// perspective method
 	Vector3D d = e.subtract(getCenterOfImagePlane());
 	Vector3D direction = w.scale(-1 * d.magnitude()).add(u.scale(pixel_u)).add(v.scale(pixel_v));
+	// cout<<e.x<<','<<e.y<<','<<e.z<<endl;
+	// cout<<direction.x<<','<<direction.y<<','<<direction.z<<endl;
 	ray = Ray(e, direction);
 	//// orthographic method
 	// Vector3D origin = e.add(u.scale(pixel_u).add(v.scale(pixel_v)));

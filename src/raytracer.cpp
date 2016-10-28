@@ -26,6 +26,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	if (!interceptsObject(ray, in, primitive)) {
  		return black;
 	}
+	return Vector3D(1,1,1);
 	// otherwise we now have the correct intersection and object
  	// brdf will be obtained from Material's shading method
  	//==== I think these lines can be deleted ====
@@ -67,10 +68,10 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 	float best_time = -1;
 	// for every object in the scene, check if ray intersects it
 	for (int i = 0; i < numobjects; i++) {
-		std::cout<<numobjects<<std::endl;
-		std::cout<<objectiter.size()<<std::endl;
+		// std::cout<<numobjects<<std::endl;
+		// std::cout<<objectiter[i]<<std::endl;
 		if (objectiter[i]->intersect(ray, temp)) {
-			if (best_time == -1) {
+			if (best_time == -1 && temp.time >= 0) {
 				// this is our first hit, best time by default
 				best_time = temp.time; // intersection stores hittime!
 				in = temp; // capture the intersection
