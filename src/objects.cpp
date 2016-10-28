@@ -189,7 +189,7 @@ int Polygon::intersectsWith(Ray ray, Vector3D a, Vector3D b) {
 	float t2 = v1.dot(v3)/v2.dot(v3);
 	// cerr << t1 << "t1" << endl;
 	// cerr << t2 << "t2" << endl;
-	if ((t1 >= 0) && (0 <= t2) && (t2 <= 1) && (abs(t1 - t2) > 0.01)) {
+	if ((t1 >= 0) && (0 <= t2) && (t2 <= 1)) {
 		return 1;
 	} else {
 		return 0;
