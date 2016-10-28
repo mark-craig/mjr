@@ -31,6 +31,9 @@ void Object::addMaterial(Material the_material) {
 void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();
 }
+void Object::addTransformation(Transformation newTransform) {
+	transform = newTransform;
+}
 
 
 
@@ -39,9 +42,22 @@ Sphere::Sphere(Vector3D icenter, float iradius) {
 	radius = iradius;
 }
 bool Sphere::intersect(Ray ray, Intersection &intersection) {
-	Vector3D d = ray.dir.normalize();
+	// convert ray to object space
+	Vector4f dir = Vector4f(ray.dir.x, ray.dir.y, ray.dir.z, 0.0f);
+	Vector4f pos = Vector4f(ray.pos.x, ray.pos.y, ray.pos.z, 1.0f);
+	Vector4f new_dir;
+	Vector4f new_pos;
+	if (transform.isIdentity()) {
+		new_dir = dir;
+		new_pos = pos;
+	}
+	else {
+		new_dir = transform.m.inverse()*dir;
+		new_pos = transform.m.inverse()*pos;
+	}
+	Vector3D d = Vector3D(new_dir[0], new_dir[1], new_dir[2]);
 	Vector3D c = center;
-	Vector3D e = ray.pos;
+	Vector3D e = Vector3D(new_pos[0], new_pos[1], new_pos[2]);
 
 	// slightly different quadratic function, pg. 77 Shirley & Marschner
 	float A = d.dot(d);
@@ -73,7 +89,22 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		
 		intersection.position = ray.t(t);
 		// bottom of pg. 77
-		intersection.normal = intersection.position.subtract(center).scale(1/radius);
+		intersection.normal = intersection.position.subtract(center);
+		// back to world space
+		Vector4f inpos = Vector4f(intersection.position.x, intersection.position.y, intersection.position.z, 1.0f);
+		Vector4f innom = Vector4f(intersection.normal.x, intersection.normal.y, intersection.normal.z, 0.0f);
+		Vector4f new_inpos;
+		Vector4f new_innom;
+		if (transform.isIdentity()) {
+			new_inpos = inpos;
+			new_innom = innom;
+		}
+		else {
+			new_inpos = transform.m*inpos;
+			new_innom = transform.m*innom;
+		}
+		intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
+		intersection.normal = Vector3D(new_innom[0], new_innom[1], new_innom[2]).normalize();
 		intersection.time = t;
 		// cout << "ray hit at" << intersection.position.x << intersection.position.y << intersection.position.z << endl;
 		return true;
@@ -92,32 +123,46 @@ bool Triangle::intersect(Ray ray, Intersection &intersection) {
 	// Shirley & Marschner pg. 79
 	// this could potentially be faster using decomposition of Cramer's rule
 	// but I believe in the powers of Eigen
-	
+	Vector4f dir = Vector4f(ray.dir.x, ray.dir.y, ray.dir.z, 0.0f);
+	Vector4f pos = Vector4f(ray.pos.x, ray.pos.y, ray.pos.z, 1.0f);
+	Vector4f new_dir;
+	Vector4f new_pos;
+	if (transform.isIdentity()) {
+		new_dir = dir;
+		new_pos = pos;
+	}
+	else {
+		new_dir = transform.m.inverse()*dir;
+		new_pos = transform.m.inverse()*pos;
+	}
+	Vector3D d = Vector3D(new_dir[0], new_dir[1], new_dir[2]);
+	Vector3D e = Vector3D(new_pos[0], new_pos[1], new_pos[2]);
+
 	Matrix3f A;
-	A << v1.x - v2.x, v1.x - v3.x, ray.dir.x,
-		 v1.y - v2.y, v1.y - v3.y, ray.dir.y,
- 		 v1.z - v2.z, v1.z - v3.z, ray.dir.z;
+	A << v1.x - v2.x, v1.x - v3.x, d.x,
+		 v1.y - v2.y, v1.y - v3.y, d.y,
+ 		 v1.z - v2.z, v1.z - v3.z, d.z;
  	float detA = A.determinant();
  	Matrix3f tMatrix;
- 	tMatrix << v1.x - v2.x, v1.x - v3.x, v1.x - ray.pos.x,
-		 	   v1.y - v2.y, v1.y - v3.y, v1.y - ray.pos.y,
- 		 	   v1.z - v2.z, v1.z - v3.z, v1.z - ray.pos.z;
+ 	tMatrix << v1.x - v2.x, v1.x - v3.x, v1.x - e.x,
+		 	   v1.y - v2.y, v1.y - v3.y, v1.y - e.y,
+ 		 	   v1.z - v2.z, v1.z - v3.z, v1.z - e.z;
  	float t = tMatrix.determinant()/detA;
  	if (t < ray.t_min || t > ray.t_max) {
  		return false;
  	}
  	Matrix3f gammaMatrix;
- 	gammaMatrix << v1.x - v2.x, v1.x - ray.pos.x, ray.dir.x,
- 				   v1.y - v2.y, v1.y - ray.pos.y, ray.dir.y,
- 				   v1.z - v2.z, v2.z - ray.pos.z, ray.dir.z;
+ 	gammaMatrix << v1.x - v2.x, v1.x - e.x, d.x,
+ 				   v1.y - v2.y, v1.y - e.y, d.y,
+ 				   v1.z - v2.z, v2.z - e.z, d.z;
  	float gamma = gammaMatrix.determinant()/detA;
  	if (gamma < 0 || gamma > 1) {
  		return false;
  	}
  	Matrix3f betaMatrix;
- 	betaMatrix << v1.x - ray.pos.x, v1.x - v3.x, ray.dir.x,
- 				  v1.y - ray.pos.y, v1.y - v3.y, ray.dir.y,
- 				  v1.z - ray.pos.z, v1.z - v3.z, ray.dir.z;
+ 	betaMatrix << v1.x - e.x, v1.x - v3.x, d.x,
+ 				  v1.y - e.y, v1.y - v3.y, d.y,
+ 				  v1.z - e.z, v1.z - v3.z, d.z;
  	float beta = betaMatrix.determinant()/detA;
  	if (beta < 0 || beta > 1 - gamma) {
  		return false;
@@ -125,7 +170,21 @@ bool Triangle::intersect(Ray ray, Intersection &intersection) {
  	intersection.position = ray.t(t);
  	 // Justin's solution for making sure normal is pointed in right direction
  	Vector3D n = v1.subtract(v2).cross(v1.subtract(v3));
- 	intersection.normal = n.scale(-n.dot(ray.dir)/abs(n.dot(ray.dir)));
+ 	intersection.normal = n.scale(-n.dot(d)/abs(n.dot(d)));
+ 	Vector4f inpos = Vector4f(intersection.position.x, intersection.position.y, intersection.position.z, 1.0f);
+	Vector4f innom = Vector4f(intersection.normal.x, intersection.normal.y, intersection.normal.z, 0.0f);
+	Vector4f new_inpos;
+	Vector4f new_innom;
+	if (transform.isIdentity()) {
+		new_inpos = inpos;
+		new_innom = innom;
+	}
+	else {
+		new_inpos = transform.m*inpos;
+		new_innom = transform.m*innom;
+	}
+	intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
+	intersection.normal = Vector3D(new_innom[0], new_innom[1], new_innom[2]).normalize();
  	return true;
 }
 

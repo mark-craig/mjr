@@ -8,7 +8,7 @@ class Transformation {
 // abstract class
 public:
 	Transformation();
-	Transformation(Transformation left, Transformation right);
+	Transformation(Matrix4f new_m);
 	bool isIdentity();
 	// members
 	Matrix4f m;

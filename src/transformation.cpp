@@ -9,8 +9,17 @@ Transformation::Transformation() {
 		 0, 0, 0, 1;
 }
 
-Transformation::Transformation(Matrix4f new_m) {
-	m = new_m;
+Transformation::Transformation(Transformation left, Transformation right) {
+	m = left.m*right.m;
+}
+
+bool Transformation::isIdentity() {
+	Matrix4f temp;
+	temp << 1, 0, 0, 0,
+	     	0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1;
+	return m == temp;
 }
 
 
