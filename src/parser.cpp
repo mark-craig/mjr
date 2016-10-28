@@ -26,7 +26,7 @@ Scene Parser::parseInputFile(string filepath) {
 	Camera camera = Camera();
 	Material material = Material();
 	////Initialze an identity transformation
-	vector<Transformation*> transformations;
+	Transformation transformation = Transformation();
 	string line; // each line we read out from file
 	// cout << line << endl;
 	while(!f.eof()) { // while we have not reached the end of the file
@@ -61,8 +61,8 @@ Scene Parser::parseInputFile(string filepath) {
 			Vector3D position = Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
 			Sphere object = Sphere(position, stof(parsed_line[4]));
 			//for transformations
-			//object.addTransformation(transformation);
 			object.addMaterial(material);
+			object.addTransformation(transformation);
 			scene.addObject(&object);
 		}
 		// parse triangle line
@@ -78,8 +78,8 @@ Scene Parser::parseInputFile(string filepath) {
 			Vector3D c = Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
 			Triangle object = Triangle(a, b, c);
 			//for transformations
-			//object.addTransformation(transformation);
 			object.addMaterial(material);
+			object.addTransformation(transformation);
 			scene.addObject(&object);
 		}
 		// parse obj file
@@ -163,8 +163,37 @@ Scene Parser::parseInputFile(string filepath) {
 				cout<<string<<endl;
 				throw;
 			}
-			Transformation * transform = Rotate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			transformations.push_back(transform);
+			Rotate transform = Rotate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			transformation = Transformation(transformation, transform);
+		}
+		else if (strcmp(parsed_line[0].c_str(), "xfs") == 0) {
+			// verify num args
+			if (parsed_line.size() != 4) {
+				string string = "Scale line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Scale transform = Scale(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			transformation = Transformation(transformation, transform);
+		}
+		else if (strcmp(parsed_line[0].c_str(), "xft") == 0) {
+			// verify num args
+			if (parsed_line.size() != 4) {
+				string string = "Translate line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			Translate transform = Translate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			transformation = Transformation(transformation, transform);
+		}
+		else if (strcmp(parsed_line[0].c_str(), "xfz") == 0) {
+			// verify num args
+			if (parsed_line.size() != 1) {
+				string string = "Identity line improper args";
+				cout<<string<<endl;
+				throw;
+			}
+			transformation = Transformation();
 		}
 	}
 

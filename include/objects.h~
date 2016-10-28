@@ -2,6 +2,7 @@
 #include "material.h"
 #include "vector3d.h"
 #include "intersection.h"
+#include "transformation.h"
 #include "ray.h"
 
 class Object {
@@ -14,11 +15,13 @@ public:
 	Object();
  	virtual bool intersect(Ray ray, Intersection &intersection) =0;
  	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float sp);
+ 	void addMaterial(Material the_material);
  	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float spv);
 	void getBRDF(Vector3D position, Vector3D normal, BRDF &brdf);
 	// members
 	Vector3D center;
 	Material material;
+	Transformation transform = Transformation();
 };
 
 class Sphere:public Object {
@@ -48,9 +51,21 @@ public:
 	Triangle();
 	Triangle(Vector3D a, Vector3D b, Vector3D c);
 	bool intersect(Ray ray, Intersection &intersection);
+	Triangle applyTransformation(Transformation the_transform);
 
 	// members
 	Vector3D v1;
 	Vector3D v2;
 	Vector3D v3;
+};
+
+class Polygon: public Object {
+public:
+	Polygon();
+	Polygon(vector<Vector3D> vectors);
+	bool intersect(Ray ray, Intersection &intersection);
+	int intersectsWith(Ray ray, Vector3D a, Vector3D b);
+	// members
+	vector<Vector3D> vertices;
+
 };

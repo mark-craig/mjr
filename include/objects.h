@@ -18,10 +18,11 @@ public:
  	void addMaterial(Material the_material);
  	void addMaterial(Vector3D ka, Vector3D kd, Vector3D ks, float spu, float spv);
 	void getBRDF(Vector3D position, Vector3D normal, BRDF &brdf);
+	void addTransformation(Transformation newTransform);
 	// members
 	Vector3D center;
 	Material material;
-	Transformation *transform;
+	Transformation transform = Transformation();
 };
 
 class Sphere:public Object {
