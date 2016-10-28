@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "scene.h"
 using namespace std;
 
 class Parser {
@@ -14,4 +15,5 @@ class Parser {
 	//other methods
 	Scene parseInputFile(string filepath);
 	vector<string> parseline(string line);
+	vector<Object*> Parser::parseObjFile(string filepath);
 };

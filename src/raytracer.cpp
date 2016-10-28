@@ -41,14 +41,14 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
 			// get the color that is added _from_the_single_light_ray_
 			Vector3D shadingFromLight = (*primitive)->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
-			if (lightiter[i]->falloff == 1) {
-				color = color.scale(1.0f / lightiter[i]->getVector().subtract(in.position).magnitude());
-			} else if (lightiter[i]->falloff == 2) {
-				float fall = lightiter[i]->getVector().subtract(in.position).magnitude() * lightiter[i]->getVector().subtract(in.position).magnitude();
-				color = color.scale(1.0f / fall);
-			}
 		}
 		color = color.add((*primitive)->material.shadeAmbient(Vector3D(), lightiter[i]->getColor()));
+		if (lightiter[i]->falloff == 1) {
+			color = color.scale(1.0f / lightiter[i]->getVector().subtract(in.position).magnitude());
+		} else if (lightiter[i]->falloff == 2) {
+			float fall = lightiter[i]->getVector().subtract(in.position).magnitude() * lightiter[i]->getVector().subtract(in.position).magnitude();
+			color = color.scale(1.0f / fall);
+		}
 	}
 	// handle reflections soon
 	if (!(*primitive)->material.calculateBRDF().kr.iszero()) {

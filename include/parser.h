@@ -15,4 +15,5 @@ class Parser {
 	//other methods
 	Scene parseInputFile(string filepath);
 	vector<string> parseline(string line);
+	vector<Object*> parseObjFile(string filepath);
 };
