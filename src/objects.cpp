@@ -1,6 +1,6 @@
 #include "objects.h"
+#include "transformation.h"
 #include <cfloat>
-#include <Eigen/Dense>
 
 using namespace std;
 using namespace Eigen;
@@ -31,6 +31,8 @@ void Object::addMaterial(Material the_material) {
 void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();
 }
+
+
 
 Sphere::Sphere(Vector3D icenter, float iradius) {
 	center = icenter;
@@ -77,6 +79,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		return true;
 	}
 }
+
 
 Triangle::Triangle(Vector3D a, Vector3D b, Vector3D c) {
 	v1 = a;
@@ -125,6 +128,23 @@ bool Triangle::intersect(Ray ray, Intersection &intersection) {
  	intersection.normal = n.scale(-n.dot(ray.dir)/abs(n.dot(ray.dir)));
  	return true;
 }
+
+// Triangle Triangle::applyTransformation(Transformation transform) {
+// 	// convert internal Vector class to Eigen representation
+//  	Vector4f va(v1.x, v1.y, v1.z, 0);
+//  	Vector4f vb(v2.x, v2.y, v2.z, 0);
+//  	Vector4f vc(v3.x, v3.y, v3.z, 0);
+//  	// apply transformation
+//  	va = transform.m*va;
+//  	vb = transform.m*vb;
+//  	vc = transform.m*vc;
+//  	// // set back to internal representation in place
+//  	Triangle newT = Triangle();
+//  	newT.v1 = Vector3D(va[0], va[1], va[2]);
+//  	newT.v2 = Vector3D(vb[0], vb[1], vb[2]);
+//  	newT.v3 = Vector3D(vc[0], vc[1], vc[2]);
+
+// }
 
 Polygon::Polygon(vector<Vector3D> vectors) {
 	for (int i = 0; i < vectors.size(); i++) {

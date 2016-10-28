@@ -1,5 +1,5 @@
 #pragma once
-#include "objects.h"
+#undef Success
 #include <Eigen/Dense>
 
 using namespace Eigen;
@@ -8,7 +8,8 @@ class Transformation {
 // abstract class
 public:
 	Transformation();
-	void apply(Triangle &target);
+	Transformation(Matrix4f new_m);
+	bool isIdentity();
 	// members
 	Matrix4f m;
 	Matrix4f inv_m; // inverse

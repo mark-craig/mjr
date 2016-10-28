@@ -2,6 +2,7 @@
 #include "material.h"
 #include "vector3d.h"
 #include "intersection.h"
+#include "transformation.h"
 #include "ray.h"
 
 class Object {
@@ -20,6 +21,7 @@ public:
 	// members
 	Vector3D center;
 	Material material;
+	Transformation *transform;
 };
 
 class Sphere:public Object {
@@ -49,6 +51,7 @@ public:
 	Triangle();
 	Triangle(Vector3D a, Vector3D b, Vector3D c);
 	bool intersect(Ray ray, Intersection &intersection);
+	Triangle applyTransformation(Transformation the_transform);
 
 	// members
 	Vector3D v1;
