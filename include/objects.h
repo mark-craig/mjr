@@ -55,3 +55,14 @@ public:
 	Vector3D v2;
 	Vector3D v3;
 };
+
+class Polygon: public Object {
+public:
+	Polygon();
+	Polygon(vector<Vector3D> vectors);
+	bool intersect(Ray ray, Intersection &intersection);
+	int intersectsWith(Ray ray, Vector3D a, Vector3D b);
+	// members
+	vector<Vector3D> vertices;
+
+};

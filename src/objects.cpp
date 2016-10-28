@@ -1,4 +1,5 @@
 #include "objects.h"
+#include <cfloat>
 #include <Eigen/Dense>
 
 using namespace std;
@@ -30,12 +31,6 @@ void Object::addMaterial(Material the_material) {
 void Object::getBRDF(Vector3D position, Vector3D normal, BRDF &brdf){
 	brdf = material.calculateBRDF();
 }
-
-// bool Object::intersect(Ray ray, Intersection &intersection) {
-// 	// ABSTRACT METHOD, THIS SHOULD NEVER BE CALLED !!!!!
-// 	cout << "ERROR: ABSTRACT METHOD WAS CALLED SOMEHOW" << endl;
-// 	return false;
-// }
 
 Sphere::Sphere(Vector3D icenter, float iradius) {
 	center = icenter;
@@ -125,8 +120,78 @@ bool Triangle::intersect(Ray ray, Intersection &intersection) {
  		return false;
  	}
  	intersection.position = ray.t(t);
- 	 	// Justin's solution for making sure normal is pointed in right direction
+ 	 // Justin's solution for making sure normal is pointed in right direction
  	Vector3D n = v1.subtract(v2).cross(v1.subtract(v3));
  	intersection.normal = n.scale(-n.dot(ray.dir)/abs(n.dot(ray.dir)));
  	return true;
+}
+
+Polygon::Polygon(vector<Vector3D> vectors) {
+	for (int i = 0; i < vectors.size(); i++) {
+		this->vertices.push_back(vectors[i]);
+	}
+}
+
+bool Polygon::intersect(Ray ray, Intersection &intersection) {
+	//Find whether the ray intersects the polygon, capture intersection if true
+	// Shirley & Marschner pg. 80
+ 	Vector3D n = vertices[0].subtract(vertices[1]).cross(vertices[0].subtract(vertices[2])); // assuming geometry is manifold
+	// compute intersection points
+	float t = vertices[0].subtract(ray.pos).dot(n)/(1/(ray.dir.dot(n)));
+	float index0;
+	float index1;
+	if ((abs(n.z) > abs(n.x)) && (abs(n.z) > abs(n.y))) {
+		index0 = 0;
+		index1 = 1;
+	} else if (abs(n.y) > abs(n.x)) {
+		index0 = 0;
+		index1 = 2;
+	} else {
+		index0 = 1;
+		index1 = 2;
+	}
+	// project vectors onto 2d plane
+	Ray projectedRay = Ray(Vector3D(ray.t(t).index(index0), ray.t(t).index(index1), 0), Vector3D(1, 0, 0));
+	vector<Vector3D> projectedVertices;
+	for(int i = 0; i < vertices.size(); i++) {
+		projectedVertices.push_back(Vector3D(vertices[i].index(index0), vertices[i].index(index1), 0));
+	}
+
+	int sum = 0;
+	for(int i = 0; i < vertices.size() - 2; i++) {
+		sum += intersectsWith(projectedRay,
+							  projectedVertices[i],
+							  projectedVertices[i+1]);
+							  
+	}
+	// handle last term
+	sum += intersectsWith(projectedRay, projectedVertices[0], projectedVertices[projectedVertices.size() - 1]);
+	// cerr << sum << endl;
+	if (sum % 2 == 1) {
+		intersection.normal = n;
+		intersection.position = ray.t(t);
+		intersection.time = t;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+int Polygon::intersectsWith(Ray ray, Vector3D a, Vector3D b) {
+	// determine if 2D ray intersects with the line segment formed by the two points (z=0)
+	// returns 0 if it does not intersect, returns 1 if it does
+	// https://rootllama.wordpress.com/2014/06/20/ray-line-segment-intersection-test-in-2d/
+	Vector3D v1 = ray.pos.subtract(a);
+	Vector3D v2 = b.subtract(a);
+	Vector3D v3 = Vector3D(-ray.dir.y, ray.dir.x, 0);
+	float t1 = (v2.x*v1.y - v2.y*v1.x)/(v2.dot(v3));
+	float t2 = v1.dot(v3)/v2.dot(v3);
+	// cerr << t1 << "t1" << endl;
+	// cerr << t2 << "t2" << endl;
+	if ((t1 >= 0) && (0 <= t2) && (t2 <= 1) && (abs(t1 - t2) > 0.01)) {
+		return 1;
+	} else {
+		return 0;
+	}
 }

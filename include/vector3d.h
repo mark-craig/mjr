@@ -33,5 +33,6 @@ public:
 	Vector3D project(Vector3D v2);
 	float getTheta(Vector3D v2);
 	vector<float> value();
+	float index(int i);
 };
 
