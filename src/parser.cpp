@@ -151,6 +151,7 @@ Scene Parser::parseInputFile(string filepath, vector<void *> * igarbage) {
 					triangle->addMaterial(* material);
 					triangle->addTransformation(* transformation);
 					scene->addObject(triangle);
+				}
 			}
 		}
 		// parse point light
@@ -162,7 +163,7 @@ Scene Parser::parseInputFile(string filepath, vector<void *> * igarbage) {
 				throw;
 			}
 			int falloff = 0;
-			if (parsed_line.size() != 8) falloff  = stoi(parsed_line[7]);
+			if (parsed_line.size() == 8) falloff  = stoi(parsed_line[7]);
 			// add falloff later.
 			PointLight * light = new PointLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
 										  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),

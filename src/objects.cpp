@@ -100,7 +100,7 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 			new_inpos = inpos;
 		}
 		else {
-			new_innom = transform.m.inverse().transpose()*innom;
+			new_innom = transform.m*innom;
 			new_inpos = transform.m * inpos;
 			// cout<<innom<<endl;
 		}
@@ -148,26 +148,20 @@ bool Triangle::intersect(Ray ray, Intersection &intersection) {
  		 v1.z - v2.z, v1.z - v3.z, d.z;
  	float detA = A.determinant();
  	Matrix3f tMatrix;
- 	tMatrix << v1.x - v2.x, v1.x - v3.x, v1.x - e.x,
-		 	   v1.y - v2.y, v1.y - v3.y, v1.y - e.y,
- 		 	   v1.z - v2.z, v1.z - v3.z, v1.z - e.z;
- 	float t = tMatrix.determinant()/detA;
+ 	tMatrix << v1.x - v2.x, v1.x - v3.x, d.x,
+		 	   v1.y - v2.y, v1.y - v3.y, d.y,
+ 		 	   v1.z - v2.z, v1.z - v3.z, d.z;
+ 	Vector3f aminuse = {v1.x - e.x, v1.y - e.y, v1.z - e.z};
+ 	Vector3f bgt = tMatrix.inverse() * aminuse;
+ 	float t = bgt[2];
+ 	float gamma = bgt[1];
+ 	float beta = bgt[0];
  	if (t < ray.t_min || t > ray.t_max) {
  		return false;
  	}
- 	Matrix3f gammaMatrix;
- 	gammaMatrix << v1.x - v2.x, v1.x - e.x, d.x,
- 				   v1.y - v2.y, v1.y - e.y, d.y,
- 				   v1.z - v2.z, v2.z - e.z, d.z;
- 	float gamma = gammaMatrix.determinant()/detA;
  	if (gamma < 0 || gamma > 1) {
  		return false;
  	}
- 	Matrix3f betaMatrix;
- 	betaMatrix << v1.x - e.x, v1.x - v3.x, d.x,
- 				  v1.y - e.y, v1.y - v3.y, d.y,
- 				  v1.z - e.z, v1.z - v3.z, d.z;
- 	float beta = betaMatrix.determinant()/detA;
  	if (beta < 0 || beta > 1 - gamma) {
  		return false;
  	}
@@ -175,20 +169,18 @@ bool Triangle::intersect(Ray ray, Intersection &intersection) {
  	 // Justin's solution for making sure normal is pointed in right direction
  	Vector3D n = v1.subtract(v2).cross(v1.subtract(v3));
  	intersection.normal = n.scale(-n.dot(d)/abs(n.dot(d)));
- 	Vector4f inpos = Vector4f(intersection.position.x, intersection.position.y, intersection.position.z, 1.0f);
-	Vector4f innom = Vector4f(intersection.normal.x, intersection.normal.y, intersection.normal.z, 0.0f);
-	Vector4f new_inpos;
+ 	Vector4f innom = Vector4f(intersection.normal.x, intersection.normal.y, intersection.normal.z, 0.0f);
 	Vector4f new_innom;
-	if (transform.isIdentity()) {
-		new_inpos = inpos;
-		new_innom = innom;
-	}
-	else {
-		new_inpos = transform.m*inpos;
-		new_innom = transform.m*innom;
-	}
-	intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
+		if (transform.isIdentity()) {
+			new_innom = innom;
+		}
+		else {
+			new_innom = transform.m*innom;
+		}
+		// intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
+	// intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
 	intersection.normal = Vector3D(new_innom[0], new_innom[1], new_innom[2]).normalize();
+	intersection.time = t;
  	return true;
 }
 

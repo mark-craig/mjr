@@ -19,7 +19,7 @@ void Scene::render(int x, int y, bool write, string name) {
 	RayTracer raytracer = RayTracer(numlights, numobjects, lightiter, objectiter);
 	int n = x * y + 2000;
 	ProgressBar *bar2 = new ProgressBar(n, "Rendering: ");
-	bar2->SetFrequencyUpdate(1);
+	bar2->SetFrequencyUpdate(10);
 	int i = 0;
 	while(sampler.getSample(sample)) {
 		++i;

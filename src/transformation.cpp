@@ -41,9 +41,9 @@ Translate::Translate(float x, float y, float z) {
 
 Rotate::Rotate(float alpha, float beta, float gamma) {
 	Matrix3f t;
-	alpha *= PI / 180;
-	beta *= PI / 180;
-	gamma *= PI / 180;
+	alpha = alpha * (PI / 180);
+	beta = beta * (PI / 180);
+	gamma = gamma * (PI / 180);
 	t << 0, -gamma, beta,
 		gamma, 0, -alpha,
 		-beta, alpha, 0;

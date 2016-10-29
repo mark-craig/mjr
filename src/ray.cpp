@@ -21,6 +21,7 @@ Vector3D Ray::t(float time) {
 		return pos.add(dir.scale(t_max));
 	}
 	Vector3D result_position = pos;
+	Vector3D temp = pos.add(dir.scale(time));
 	return pos.add(dir.scale(time));
 }
 
