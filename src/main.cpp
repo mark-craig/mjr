@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
 
 		// hold onto your butts
 		main_scene.render(700, 500, true, string("output.png"));
+
 	}
 	else {
 		Parser parse = Parser();
@@ -49,5 +50,6 @@ int main(int argc, char* argv[])
 		for (int i = 0; i < zzz; i += 1) {
 			delete garbage[i];
 		}
+
 	}
 }
