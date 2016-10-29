@@ -54,4 +54,4 @@ If ./mjr is simply called by itself, it will render an arbitrary example scene.
 
 ## Examples
 Example scene files and images of our raytracer's output for them can be found in the /examples/ directory.
-In order to run one of the examples, simply copy the "input-nn" file desired to the /build/ directory where the executable resides.
+In order to run one of the examples, simply copy the "input-nn" file desired to the /build/ directory where the executable resides and pass the filename in as the argument.
