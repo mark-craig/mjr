@@ -1,5 +1,6 @@
 #include "transformation.h"
 #include <cmath>
+#include <iostream>
 using namespace std;
 #define PI 3.14159265
 
@@ -39,21 +40,24 @@ Translate::Translate(float x, float y, float z) {
 }
 
 Rotate::Rotate(float alpha, float beta, float gamma) {
-	Matrix4f t;
-	t <<   1, 0, 0, 0,
-		   0, cos(alpha * PI / 180), -sin(alpha * PI / 180), 0,
-		   0, sin(alpha * PI / 180), cos(alpha * PI / 180), 0,
-		   0, 0, 0, 1;
-	Matrix4f s;
-	s << cos(beta * PI / 180), 0, sin(beta * PI / 180), 0,
-		 0, 1, 0, 0,
-		 -sin(beta * PI / 180), 0, cos(beta * PI / 180), 0,
-		 0, 0, 0, 1;
-	Matrix4f r;
-	r << cos(beta * PI / 180), -sin(beta * PI / 180), 0, 0,
-		 sin(beta * PI / 180), cos(beta * PI / 180), 0, 0,
-		  0, 0, 1, 0,
-		  0, 0, 0, 1;
-	
-	m = t*s*r;
+	Matrix3f t;
+	alpha *= PI / 180;
+	beta *= PI / 180;
+	gamma *= PI / 180;
+	t << 0, -gamma, beta,
+		gamma, 0, -alpha,
+		-beta, alpha, 0;
+	Vector3f rhat  = Vector3f(alpha, beta, gamma);
+	rhat.normalize();
+	Matrix3f stuff; stuff =  rhat * rhat.transpose();
+	float theta = rhat.norm();
+	Matrix3f xprime;
+	xprime = (stuff + sin(theta) * t - cos(theta) * t * t);
+	Matrix4f shit;
+	shit << 1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			0,0,0,1;
+	shit.block(0,0,3,3) = xprime;
+	m = shit;
 }
