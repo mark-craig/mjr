@@ -13,7 +13,7 @@ using namespace std;
 Parser::Parser() {
 }
 
-Scene Parser::parseInputFile(string filepath) {
+Scene Parser::parseInputFile(string filepath, vector<void *> * igarbage) {
 	ifstream f;
 	f.open(filepath);
 	if (f.bad()) {
@@ -22,6 +22,7 @@ Scene Parser::parseInputFile(string filepath) {
 		cout<<string<<endl;
 		throw;
 	}
+	vector<void *> garbage;
 	Scene * scene = new Scene();
 
 	Camera * camera = new Camera();
@@ -30,7 +31,10 @@ Scene Parser::parseInputFile(string filepath) {
 
 	////Initialze an identity transformation
 	Transformation * transformation = new Transformation();
-
+	garbage.push_back(scene);
+	garbage.push_back(camera);
+	garbage.push_back(material);
+	garbage.push_back(transformation);
 	string line; // each line we read out from file
 	// cout << line << endl;
 
@@ -51,13 +55,13 @@ Scene Parser::parseInputFile(string filepath) {
 				cout<<string<<endl;
 				throw;
 			}
-			delete camera;
 			camera = new Camera(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
 							stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
 							stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]),
 							stof(parsed_line[10]), stof(parsed_line[11]), stof(parsed_line[12]),
 							stof(parsed_line[13]), stof(parsed_line[14]), stof(parsed_line[15]));
 			scene->addCamera(* camera);
+			garbage.push_back(camera);
 		}
 		// parse sphere line
 		else if (strcmp(parsed_line[0].c_str(), "sph") == 0) {
@@ -69,6 +73,7 @@ Scene Parser::parseInputFile(string filepath) {
 			}
 			Vector3D * position = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
 			Sphere * object = new Sphere(* position, stof(parsed_line[4]));
+			garbage.push_back(position); garbage.push_back(object);
 			//for transformations
 			object->addMaterial(* material);
 			object->addTransformation(* transformation);
@@ -86,6 +91,8 @@ Scene Parser::parseInputFile(string filepath) {
 			Vector3D * b = new Vector3D(stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
 			Vector3D * c = new Vector3D(stof(parsed_line[7]), stof(parsed_line[8]), stof(parsed_line[9]));
 			Triangle * object = new Triangle(*a, *b, *c);
+			garbage.push_back(a); garbage.push_back(b);
+			garbage.push_back(c); garbage.push_back(object);
 			//for transformations
 			object->addMaterial(* material);
 			object->addTransformation(* transformation);
@@ -108,7 +115,6 @@ Scene Parser::parseInputFile(string filepath) {
 				cout<<string<<endl;
 				throw;
 			}
-	
 			string line2; // each line we read out from file
 			int index = 1;
 			while(getline(filename, line2)) { // while we have not reached the end of the file
@@ -134,9 +140,8 @@ Scene Parser::parseInputFile(string filepath) {
 						cout<<string<<endl;
 						throw;
 					}
-					//cerr << "creating a triangle" << endl;
 					Object * triangle = new Triangle(* vertices[stoi(objLine[1])], * vertices[stoi(objLine[2])], * vertices[stoi(objLine[3])]);
-					// Triangle * triangle = new Triangle(Vector3D(1, 0, 1), Vector3D(0, 1, 1), Vector3D(0, 0, 1));
+					garbage.push_back(triangle);
 					triangle->addMaterial(* material);
 					triangle->addTransformation(* transformation);
 					scene->addObject(triangle);
@@ -152,11 +157,12 @@ Scene Parser::parseInputFile(string filepath) {
 				throw;
 			}
 			int falloff = 0;
-			if (parsed_line.size() != 8) falloff  = stoi(parsed_line[7]);
+			if (parsed_line.size() == 8) falloff  = stoi(parsed_line[7]);
 			// add falloff later.
 			PointLight * light = new PointLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
 										  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]),
 										  falloff);
+			garbage.push_back(light);
 			scene->addLight(light);
 		}
 		// parse directional light
@@ -169,6 +175,7 @@ Scene Parser::parseInputFile(string filepath) {
 			}
 			DirectionalLight * light = new DirectionalLight(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]),
 										  			  stof(parsed_line[4]), stof(parsed_line[5]), stof(parsed_line[6]));
+			garbage.push_back(light);
 			scene->addLight(light);
 		}
 		// parse ambient light
@@ -181,6 +188,7 @@ Scene Parser::parseInputFile(string filepath) {
 			}
 			// this might not work
 			DirectionalLight * light = new DirectionalLight(0.0f, 0.0f, 0.0f, stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
+			garbage.push_back(light);
 			scene->addLight(light);
 		}
 		// parse material
@@ -198,6 +206,9 @@ Scene Parser::parseInputFile(string filepath) {
 			float sp = stof(parsed_line[10]);
 			BRDF * brdf = new BRDF(*ka, *kd, *ks, *kr);
 			material = new Material(*brdf, sp);
+			garbage.push_back(ka); garbage.push_back(kd);
+			garbage.push_back(ks); garbage.push_back(kr);
+			garbage.push_back(brdf); garbage.push_back(material);
 		}
 		// handle transformations
 		else if (strcmp(parsed_line[0].c_str(), "xfr") == 0) {
@@ -209,6 +220,7 @@ Scene Parser::parseInputFile(string filepath) {
 			}
 			Rotate * transform = new Rotate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
 			transformation = new Transformation(* transformation, * transform);
+			garbage.push_back(transform); garbage.push_back(transformation);
 		}
 		else if (strcmp(parsed_line[0].c_str(), "xfs") == 0) {
 			// verify num args
@@ -219,6 +231,7 @@ Scene Parser::parseInputFile(string filepath) {
 			}
 			Scale * transform = new Scale(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
 			transformation = new Transformation( *transformation, * transform);
+			garbage.push_back(transform); garbage.push_back(transformation);
 		}
 		else if (strcmp(parsed_line[0].c_str(), "xft") == 0) {
 			// verify num args
@@ -229,6 +242,7 @@ Scene Parser::parseInputFile(string filepath) {
 			}
 			Translate * transform = new Translate(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
 			transformation = new Transformation(* transformation, * transform);
+			garbage.push_back(transform); garbage.push_back(transformation);
 		}
 		else if (strcmp(parsed_line[0].c_str(), "xfz") == 0) {
 			// verify num args
@@ -238,8 +252,10 @@ Scene Parser::parseInputFile(string filepath) {
 				throw;
 			}
 			transformation = new Transformation();
+			garbage.push_back(transformation);
 		}
 	}
+	*igarbage = garbage;
 	return * scene;
 }
 

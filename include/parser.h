@@ -13,7 +13,7 @@ class Parser {
 	Parser();
 
 	//other methods
-	Scene parseInputFile(string filepath);
+	Scene parseInputFile(string filepath, vector<void *> * garbage);
 	vector<string> parseline(string line);
 	vector<Object*> parseObjFile(string filepath);
 };
