@@ -1,0 +1,7 @@
+From the build directory - execute 
+
+./mjr ../examples/input-06 --write ../examples/input-06.png
+
+Runtime: 10 seconds on s271-3
+
+Demonstrates a scaling transformation and falloff.

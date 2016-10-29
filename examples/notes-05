@@ -1,0 +1,7 @@
+From the build directory - execute 
+
+./mjr ../examples/input-04 --write ../examples/input-04.png
+
+Runtime: 20 seconds on s271-3
+
+Demonstrates reflections. Taken straight from the ray tracing journal.

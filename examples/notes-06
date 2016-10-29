@@ -1,0 +1,6 @@
+Command:
+./mjr ../examples/input-06 --write
+Run Time:
+6.66941 seconds.
+Features Demonstrated:
+A simple base case for .obj file parsing.

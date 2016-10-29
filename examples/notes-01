@@ -1,0 +1,6 @@
+Command: 
+./mjr ../examples/input-01.png
+Run Time:
+6.16743 seconds.
+Features Demonstrated:
+A simple base case rendering a sphere with an isotropic material.

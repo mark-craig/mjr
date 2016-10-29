@@ -1,0 +1,7 @@
+From the build directory - execute 
+
+./mjr ../examples/input-04 --write ../examples/input-04.png
+
+Runtime: 20 seconds on s271-3
+
+Demonstrates point light and reflections. I thought it was aesthetic because of how the reflections bounced off.

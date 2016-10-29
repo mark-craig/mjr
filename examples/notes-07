@@ -1,0 +1,7 @@
+From the build directory - execute 
+
+./mjr ../examples/input-07 --write ../examples/input-07.png
+
+Runtime: 10 seconds on s271-3
+
+Demonstrates transformations and harsh fall off close to a surface.

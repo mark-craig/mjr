@@ -1,0 +1,6 @@
+Command:
+./mjr ../examples/input-03 --write
+Run Time:
+97.786 seconds
+Features Demonstrated:
+This scene serves as a stress test for the raytracer's ability to calculate reflections.
