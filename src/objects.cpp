@@ -100,15 +100,20 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		// cout<<intersection.normal.x<<','<<intersection.normal.y<<','<<intersection.normal.z<<endl;
 		// back to world space
 		Vector4f innom = Vector4f(intersection.normal.x, intersection.normal.y, intersection.normal.z, 0.0f);
+		Vector4f inpos = Vector4f(intersection.position.x, intersection.position.y, intersection.position.z, 1.0f);
+		Vector4f new_inpos;
 		Vector4f new_innom;
 		if (transform.isIdentity()) {
 			new_innom = innom;
+			new_inpos = inpos;
 		}
 		else {
 			new_innom = transform.m.inverse().transpose()*innom;
+			new_inpos = transform.m * inpos;
+			// cout<<innom<<endl;
 		}
 		// intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
-		intersection.position = ray.t(t);
+		intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
 		intersection.normal = Vector3D(new_innom[0], new_innom[1], new_innom[2]).normalize();
 		// cout<<"Kill me"<<","<<t<<endl;
 		// cout<<intersection.position.x<<','<<intersection.position.y<<','<<intersection.position.z<<endl;

@@ -2,6 +2,7 @@
 #include "parser.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
 int main(int argc, char* argv[])
 {
@@ -40,16 +41,19 @@ int main(int argc, char* argv[])
 		main_scene.render(700, 700, true, string("object.png"));
 	}
 	else {
-		cout<<argc<<','<<argv[argc - 1]<<endl;;
 		Parser parse = Parser();
-		Scene main_scene = parse.parseInputFile(string(argv[1]));
-		if (argc == 3 && strcmp("--write", argv[2])) {
+		std::vector<void *> garbage;
+		Scene main_scene = parse.parseInputFile(string(argv[1]), &garbage);
+		if (argc == 3 && strcmp("--write", argv[2]) == 0) {
 			main_scene.render(700, 700, true, string("object.png"));
-		} else if (argc == 4 && strcmp("--write", argv[2])) {
-			cout<<argv[3]<<endl;;
+		} else if (argc == 4 && strcmp("--write", argv[2]) == 0) {
 			main_scene.render(700, 700, true, string(argv[3]));
 		} else {
 			main_scene.render(700, 700, false, string("not written"));
+		}
+		int zzz = (garbage).size();
+		for (int i = 0; i < zzz; i += 1) {
+			delete garbage[i];
 		}
 	}
 }
