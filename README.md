@@ -45,7 +45,9 @@ make
 ~~~~
 
 ## Command-Line Arguments
+~~~~
 ./mjr [scene_plaintext] --write
+~~~~
 
 The --write flag is used to save the output image as a PNG. Otherwise, it will simply display in a window.
 If ./mjr is simply called by itself, it will render an arbitrary example scene.
