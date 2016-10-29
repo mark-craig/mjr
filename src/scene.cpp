@@ -1,6 +1,7 @@
 #include "scene.h"
 #include <string>
 #include <iostream>
+#include <ctime>
 
 using namespace cimg_library;
 using namespace std;
@@ -13,6 +14,7 @@ Scene::Scene() {
 }
 
 void Scene::render(int x, int y, bool write, string name) {
+	clock_t startTime = clock();
 	Sampler sampler = Sampler(x, y);
 	film = Film(x, y);
 	Sample sample = Sample();
@@ -33,7 +35,9 @@ void Scene::render(int x, int y, bool write, string name) {
 		cout<<"Writing"<<","<<name<<endl;
 		film.write_film(name);
 	}
+	cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
 	film.display_film();
+
 };
 
 void Scene::addLight(Light* light) {
