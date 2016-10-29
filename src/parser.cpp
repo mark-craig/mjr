@@ -41,7 +41,9 @@ Scene Parser::parseInputFile(string filepath, vector<void *> * igarbage) {
 	while(getline(f, line)) { // while we have not reached the end of the file
 		vector<string> parsed_line = parseline(line);
 		// # will be comment lines
-		if (strcmp(parsed_line[0].c_str(), "#") == 0) {
+		if (parsed_line.size() == 0) {
+			continue;
+		} else if (strcmp(parsed_line[0].c_str(), "#") == 0) {
 		// pass
 		}
 		// parse camera line
@@ -98,19 +100,57 @@ Scene Parser::parseInputFile(string filepath, vector<void *> * igarbage) {
 		}
 		// parse obj file
 		else if (strcmp(parsed_line[0].c_str(), "obj") == 0) {
-			// verify num args
-			if (parsed_line.size() != 2) {
-				string string = "No obj file with that name";
+			vector<string> quotes_split;
+			pystring::rsplit(line, quotes_split, "\"");
+			string objFilePath = quotes_split[1];
+			cerr << objFilePath << endl;
+			// // verify num args
+			// if (parsed_line.size() != 2) {
+			// 	string string = "No obj file with that name";
+			// 	cout<<string<<endl;
+			// 	throw;
+			// }
+			//cerr << "parsing obj file" << endl;
+			unordered_map<int, Vector3D*> vertices;
+			vector<Object*> objects;
+			ifstream filename;
+			filename.open(objFilePath);
+			if (filename.bad()) {
+				// for some reason the file fails to open
+				string string = "Can not open file";
 				cout<<string<<endl;
 				throw;
 			}
-			vector<Object*> objects = parseObjFile(parsed_line[1]);
-			int sizeofobjects = objects.size();
-			for (int i = 0; i < sizeofobjects; i += 1) {
-				Object * object = objects[i];
-				garbage.push_back(object);
-				object->addMaterial(* material);
-				scene->addObject(object);
+			string line2; // each line we read out from file
+			int index = 1;
+			while(getline(filename, line2)) { // while we have not reached the end of the file
+				//cerr << "getting a line from obj file" << endl;
+				vector<string> objLine = parseline(line2);
+				if (objLine.size() == 0) {
+					continue;
+				}
+				//cerr << objLine[0] << endl;
+				if (strcmp(objLine[0].c_str(), "v") == 0) {
+					if (objLine.size() != 4) {
+						string string = "Vertice line improper args";
+						cout<<string<<endl;
+						throw;
+					}
+					Vector3D * position = new Vector3D(stof(objLine[1]), stof(objLine[2]), stof(objLine[3]));
+					vertices[index] = position;
+					index += 1;
+				}
+				if (strcmp(objLine[0].c_str(), "f") == 0) {
+					if (objLine.size() != 4) {
+						string string = "Face line improper args";
+						cout<<string<<endl;
+						throw;
+					}
+					Object * triangle = new Triangle(* vertices[stoi(objLine[1])], * vertices[stoi(objLine[2])], * vertices[stoi(objLine[3])]);
+					garbage.push_back(triangle);
+					triangle->addMaterial(* material);
+					triangle->addTransformation(* transformation);
+					scene->addObject(triangle);
 			}
 		}
 		// parse point light
@@ -231,46 +271,4 @@ vector<string> Parser::parseline(string line) {
 	// tokens.erase(tokens.begin());
 	return tokens;
 
-}
-
-vector<Object*> Parser::parseObjFile(string filepath) {
-	unordered_map<int, Vector3D*> vertices;
-	vector<Object*> objects;
-	ifstream f;
-	f.open(filepath);
-	if (f.bad()) {
-		// for some reason the file fails to open
-		string string = "Can not open file";
-		cout<<string<<endl;
-		throw;
-	}
-	////Initialze an identity transformation
-	// Transformation transformation = Transformation();
-	string line; // each line we read out from file
-	// cout << line << endl;
-	int index = 1;
-	while(!f.eof()) { // while we have not reached the end of the file
-		getline(f, line);
-		vector<string> parsed_line = parseline(line);
-		if (strcmp(parsed_line[0].c_str(), "v")) {
-			if (parsed_line.size() != 4) {
-				string string = "Vertice line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Vector3D * position = new Vector3D(stof(parsed_line[1]), stof(parsed_line[2]), stof(parsed_line[3]));
-			vertices[index] = position;
-			index += 1;
-		}
-		if (strcmp(parsed_line[0].c_str(), "f")) {
-			if (parsed_line.size() != 4) {
-				string string = "Face line improper args";
-				cout<<string<<endl;
-				throw;
-			}
-			Triangle * triangle = new Triangle(* vertices[stoi(parsed_line[1])], * vertices[stoi(parsed_line[2])], * vertices[stoi(parsed_line[3])]);
-			objects.push_back(triangle);
-		}
-	}
-	return objects;
 }

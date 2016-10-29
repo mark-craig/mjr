@@ -22,24 +22,16 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	Object* temp_primitive;
  	Object ** primitive = &temp_primitive;
  	// if we do not hit any objects in the scene, color is black
- 	//currently segfaults here
  	if (!interceptsObject(ray, in, primitive)) {
  		return black;
 	}
-	// return Vector3D(1,1,1);
-	// otherwise we now have the correct intersection and object
- 	// brdf will be obtained from Material's shading method
- 	//==== I think these lines can be deleted ====
- 	// BRDF brdf;
- 	// primitive.getBRDF(in.position, in.normal, brdf);
- 	// ===========================================
- 	// this will be our final output, everything will be channeled into here.
  	Vector3D color = Vector3D();
  	Light* currentLight;
  	// for every light in the scene, generate its ray to the point
  	for (int i = 0; i < numlights; i++) {
 		Ray lray = lightiter[i]->generateLightRay(in.position, in.normal); // generate a light ray for the point
 		if (!intersection(lray, *primitive)) { // if nothing intersects the light ray before it hits the point
+			cerr << "ray hit" << endl;
 			// get the color that is added _from_the_single_light_ray_
 			Vector3D shadingFromLight = (*primitive)->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
@@ -69,8 +61,6 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 	float best_time = -1.0f;
 	// for every object in the scene, check if ray intersects it
 	for (int i = 0; i < numobjects; i++) {
-		// std::cout<<numobjects<<std::endl;
-		// std::cout<<objectiter[i]<<std::endl;
 		if (objectiter[i]->intersect(ray, temp)) {
 			if (best_time == -1 && temp.time >= 0) {
 				// this is our first hit, best time by default
@@ -88,10 +78,6 @@ bool RayTracer::interceptsObject(Ray ray, Intersection &in, Object** primitive) 
 	if (best_time != -1.0f) {
 		// we found an interesection
 		if (* primitive ==objectiter[numobjects - 1]) {
-	// // std::cout<<*primitive<<std::endl;
-	// // std::cout<<objectiter[numobjects - 1]<<std::endl;
-	// // std::cout<<best_time<<std::endl;
-	// // std::cout<<temp.time<<std::endl;
 	}
 		return true;
 	} else {

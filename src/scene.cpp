@@ -13,17 +13,13 @@ Scene::Scene() {
 }
 
 void Scene::render(int x, int y, bool write, string name) {
-	// for (int i = 0; i < numobjects; i += 1) {
-	// 	std::cout<<objectiter[i]<<std::endl;
-	// 	std::cout<<((Sphere *) objectiter[i])->center.x<<std::endl;
-	// }
 	Sampler sampler = Sampler(x, y);
 	film = Film(x, y);
 	Sample sample = Sample();
 	RayTracer raytracer = RayTracer(numlights, numobjects, lightiter, objectiter);
 	int n = x * y + 2000;
 	ProgressBar *bar2 = new ProgressBar(n, "Rendering: ");
-	bar2->SetFrequencyUpdate(10);
+	bar2->SetFrequencyUpdate(1);
 	int i = 0;
 	while(sampler.getSample(sample)) {
 		++i;
