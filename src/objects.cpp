@@ -95,22 +95,24 @@ bool Sphere::intersect(Ray ray, Intersection &intersection) {
 		
 		intersection.position = e.add(d.scale(t));
 		// bottom of pg. 77
-		intersection.normal = intersection.position.subtract(center);
+		intersection.normal = intersection.position.subtract(center).normalize();
+		// cout<<"fssss"<<endl;
+		// cout<<intersection.normal.x<<','<<intersection.normal.y<<','<<intersection.normal.z<<endl;
 		// back to world space
-		Vector4f inpos = Vector4f(intersection.position.x, intersection.position.y, intersection.position.z, 1.0f);
 		Vector4f innom = Vector4f(intersection.normal.x, intersection.normal.y, intersection.normal.z, 0.0f);
-		Vector4f new_inpos;
 		Vector4f new_innom;
 		if (transform.isIdentity()) {
-			new_inpos = inpos;
 			new_innom = innom;
 		}
 		else {
-			new_inpos = transform.m*inpos;
 			new_innom = transform.m.inverse().transpose()*innom;
 		}
 		// intersection.position = Vector3D(new_inpos[0], new_inpos[1], new_inpos[2]);
+		intersection.position = ray.t(t);
 		intersection.normal = Vector3D(new_innom[0], new_innom[1], new_innom[2]).normalize();
+		// cout<<"Kill me"<<","<<t<<endl;
+		// cout<<intersection.position.x<<','<<intersection.position.y<<','<<intersection.position.z<<endl;
+		// cout<<intersection.normal.x<<','<<intersection.normal.y<<','<<intersection.normal.z<<endl;
 		intersection.time = t;
 		// cout << "ray hit at" << intersection.position.x << intersection.position.y << intersection.position.z << endl;
 		return true;
