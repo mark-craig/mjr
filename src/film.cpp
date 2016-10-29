@@ -1,6 +1,7 @@
 #include "film.h"
 #include "string.h"
 #include <iostream>
+#include <string>
 
 using namespace cimg_library;
 

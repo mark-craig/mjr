@@ -1,7 +1,6 @@
 #include "scene.h"
 #include "parser.h"
 #include <iostream>
-#include <string>
 
 int main(int argc, char* argv[])
 {
@@ -11,12 +10,6 @@ int main(int argc, char* argv[])
 		Scene main_scene = Scene();
 		// With an awesome sphere
 		Sphere target = Sphere(Vector3D(1,1,-5), 1.0f);
-		// Triangle target = Triangle(Vector3D(0,1,5), Vector3D(-1, 0, 4), Vector3D(0, 0, 4));
-		// vector<Vector3D> verts = {Vector3D(-1, -1, 5), 
-		// 				  		Vector3D(-1, 1, 4),
-		// 				  		Vector3D(1, 1, 4),
-		// 				  		Vector3D(1, -1, 5)};
-		// Polygon target = Polygon(verts);
 		target.addMaterial(Vector3D(0, .1, .1), Vector3D(.3, 0, 1), Vector3D(.3, .3, .3), 10.0f);
 		// target.addMaterial(Vector3D(0, 0, 0), Vector3D(0, 0, 0), Vector3D(1, 0, 0), 10.0f);
 		// std::cout<<'f'<<target.material.brdf.ka.x<<','<<target.material.brdf.ka.y<<','<<target.material.brdf.ka.z<<std::endl;
@@ -37,19 +30,19 @@ int main(int argc, char* argv[])
 
 
 		// hold onto your butts
-		main_scene.render(700, 700, true, string("object.png"));
+		main_scene.render(700, 500, true, string("output.png"));
 	}
 	else {
 		cout<<argc<<','<<argv[argc - 1]<<endl;;
 		Parser parse = Parser();
 		Scene main_scene = parse.parseInputFile(string(argv[1]));
 		if (argc == 3 && strcmp("--write", argv[2])) {
-			main_scene.render(700, 700, true, string("object.png"));
+			main_scene.render(700, 500, true, string("output.png"));
 		} else if (argc == 4 && strcmp("--write", argv[2])) {
 			cout<<argv[3]<<endl;;
-			main_scene.render(700, 700, true, string(argv[3]));
+			main_scene.render(700, 500, true, string(argv[3]));
 		} else {
-			main_scene.render(700, 700, false, string("not written"));
+			main_scene.render(700, 500, false, string("not written"));
 		}
 	}
 }

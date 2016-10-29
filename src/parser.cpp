@@ -97,13 +97,7 @@ Scene Parser::parseInputFile(string filepath) {
 			pystring::rsplit(line, quotes_split, "\"");
 			string objFilePath = quotes_split[1];
 			cerr << objFilePath << endl;
-			// // verify num args
-			// if (parsed_line.size() != 2) {
-			// 	string string = "No obj file with that name";
-			// 	cout<<string<<endl;
-			// 	throw;
-			// }
-			//cerr << "parsing obj file" << endl;
+			cerr << "parsing obj file" << endl;
 			unordered_map<int, Vector3D*> vertices;
 			vector<Object*> objects;
 			ifstream filename;
@@ -146,25 +140,13 @@ Scene Parser::parseInputFile(string filepath) {
 					triangle->addMaterial(* material);
 					triangle->addTransformation(* transformation);
 					scene->addObject(triangle);
-					//cerr << triangle->v1.x << triangle->v1.y << triangle->v1.z << "v1" << endl;
-					//cerr << triangle->v2.x << triangle->v2.y << triangle->v2.z << "v2" << endl;
-					//cerr << triangle->v3.x << triangle->v3.y << triangle->v3.z << "v3" << endl;
 				}
 			}
-			// cerr << "done processing obj file" << endl;
-			// int sizeofobjects = objects.size();
-			// cerr << sizeofobjects << "objects" << endl;
-			// for (int i = 0; i < sizeofobjects; i += 1) {
-			// 	Object * object = objects[i];
-			// 	object->addMaterial(* material);
-			// 	object->addTransformation(* transformation);
-			// 	scene->addObject(object);
-			// }
 		}
 		// parse point light
 		else if (strcmp(parsed_line[0].c_str(), "ltp") == 0) {
 			// verify num args
-			if (parsed_line.size() != 7 or parsed_line.size() == 8) {
+			if (parsed_line.size() != 8 and parsed_line.size() != 7) {
 				string string = "Point light line improper args";
 				cout<<string<<endl;
 				throw;
