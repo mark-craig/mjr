@@ -27,6 +27,7 @@ Material::Material(BRDF ibrdf, float ispu, float ispv){
 	spv = ispv;
 }
 
+
 BRDF Material::calculateBRDF() {
 	// eventually this will actually take into account textures
 	return this->brdf;

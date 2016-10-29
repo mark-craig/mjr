@@ -22,6 +22,9 @@ public:
 	// members
 	Vector3D center;
 	Material material;
+	Vector3D v1;
+	Vector3D v2;
+	Vector3D v3;
 	Transformation transform = Transformation();
 };
 
@@ -55,9 +58,6 @@ public:
 	Triangle applyTransformation(Transformation the_transform);
 
 	// members
-	Vector3D v1;
-	Vector3D v2;
-	Vector3D v3;
 };
 
 class Polygon: public Object {

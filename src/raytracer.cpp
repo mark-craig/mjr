@@ -31,6 +31,7 @@ Vector3D RayTracer::trace(Ray ray, int depth) {
  	for (int i = 0; i < numlights; i++) {
 		Ray lray = lightiter[i]->generateLightRay(in.position, in.normal); // generate a light ray for the point
 		if (!intersection(lray, *primitive)) { // if nothing intersects the light ray before it hits the point
+			cerr << "ray hit" << endl;
 			// get the color that is added _from_the_single_light_ray_
 			Vector3D shadingFromLight = (*primitive)->material.shade(ray.dir, in.position, in.normal, lightiter[i]);
 			color = color.add(shadingFromLight);
